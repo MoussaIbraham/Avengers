@@ -1,5 +1,6 @@
 package Liverpool;
 
-public class hola {
+
+public class InitForm {
 
 }
