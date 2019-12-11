@@ -5,7 +5,7 @@ public class InitForm {
 
 	public void hola() {
 	
-		System.out.println("Adios");
+		System.out.println("Adiosasdads");
 	}
 	
 }
