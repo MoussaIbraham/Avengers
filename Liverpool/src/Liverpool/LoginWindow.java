@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import org.apache.commons.net.ftp.*;
 public class LoginWindow {
@@ -18,6 +19,7 @@ public class LoginWindow {
 	private JPasswordField psword;
 	private JButton btnSalir;
 	private static Modelo mimodelo;
+	static LoginWindow window;
 
 	/**
 	 * Launch the application.
@@ -26,7 +28,7 @@ public class LoginWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LoginWindow window = new LoginWindow(mimodelo);
+					window = new LoginWindow(mimodelo);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -73,21 +75,29 @@ public class LoginWindow {
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-	
-				
-				if(txtUsuario.getText().equalsIgnoreCase("Mini")) {
-					ClientFTP conexion = new ClientFTP();
-					char[] arrayC = psword.getPassword();
-					String pass = new String(arrayC);
-					FTPClient cliente = conexion.Conexion(txtUsuario.getText().toString(), pass, mimodelo);
-					JOptionPane.showMessageDialog(null,"Correcto");
-					DirigentesWindow dirigentes = new DirigentesWindow(cliente, mimodelo);
-					dirigentes.setVisible(true);
-				} else {
-					JOptionPane.showMessageDialog(null,"Introduce mini");
-				}
+				ConexionConBD bd = new ConexionConBD();
+
+				char[] arrayC = psword.getPassword();
+				String pass = new String(arrayC);
+				System.out.println(pass);
+				System.out.println(txtUsuario.getText());
+				try {
+					bd.setRs(bd.sentencia.executeQuery("Select NICKNAME, PASWORD from users where NICKNAME like '"
+							+ txtUsuario.getText() + "' and pasword like '" + pass + "'"));
+					if (bd.getRs().next()) {
+						JOptionPane.showMessageDialog(null, "Correcto");
+						DirigentesWindow dirigentes = new DirigentesWindow(txtUsuario.getText().toString(), pass, mimodelo);						
+						dirigentes.setVisible(true);
+						window.frame.dispose();
+						bd.cerrarConexion();
+					} else {
+						JOptionPane.showMessageDialog(null, "Introduzca el usuario o contraseña correctamente.");
+					}
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Introduzca el usuario o contraseña correctamente.");
+				}}
 			}
-		});
+		);
 		btnEntrar.setBounds(129, 154, 89, 23);
 		frame.getContentPane().add(btnEntrar);
 		

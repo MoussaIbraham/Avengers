@@ -24,29 +24,15 @@ public class DirigentesWindow extends JFrame {
 
 	static JList list = null;
 	private JPanel contentPane;
+	private static String User = "";
+	private static String pass = "";
 	static FTPClient client = null;
 	private static Modelo mimodelo;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DirigentesWindow frame = new DirigentesWindow(client, mimodelo);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	public DirigentesWindow(FTPClient cliente, Modelo mimodelo) {
+	public DirigentesWindow(String string, String pass, Modelo mimodelo) {
 		this.mimodelo=mimodelo;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 444);
@@ -55,7 +41,8 @@ public class DirigentesWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		client = cliente;
+		User = string;
+		this.pass = pass;
 		
 		list = new JList();
 		list.setBounds(41, 31, 310, 332);
@@ -63,24 +50,10 @@ public class DirigentesWindow extends JFrame {
 		
 		JButton btnSalir = new JButton(mimodelo.getTextoBotonSalir());
 		btnSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				 // Cerrando sesión
-	            try {
-					client.logout();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	 
-	            // Desconectandose con el servidor
-	            try {
-					client.disconnect();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			public void actionPerformed(ActionEvent arg0) {				
 	            LoginWindow login = new LoginWindow(mimodelo);
 	            String[] args = null;
+	            setVisible(false);
 				LoginWindow.main(args);
 			}
 		});

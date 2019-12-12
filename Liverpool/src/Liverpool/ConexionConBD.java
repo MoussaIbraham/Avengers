@@ -11,7 +11,7 @@ public class ConexionConBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			try {
-				conexion = DriverManager.getConnection("jdbc:mysql://localhost/Liverpool", "root", ""); // Conecta a la BD
+				conexion = DriverManager.getConnection("jdbc:mysql://localhost/liverpool", "root", ""); // Conecta a la BD
 				sentencia = conexion.createStatement(); 
 				rs= sentencia.getResultSet();
 			} catch (SQLException e) {
@@ -26,5 +26,13 @@ public class ConexionConBD {
 		rs.close();
 		sentencia.close();
 		conexion.close();
+	}
+	
+	public ResultSet getRs() {
+		return rs;
+	}
+
+	public void setRs(ResultSet rs) {
+		this.rs = rs;
 	}
 }
