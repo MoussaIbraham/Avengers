@@ -8,7 +8,7 @@ public class Main {
 	public static void main(String[] args) {
 		LoginWindow window = new LoginWindow(mimodelo);
 		window.main(args);
-		System.out.println("hello");
+		System.out.println("hllo");
 	}
 	
 }
