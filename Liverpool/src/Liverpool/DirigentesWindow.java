@@ -25,6 +25,7 @@ public class DirigentesWindow extends JFrame {
 	static JList list = null;
 	private JPanel contentPane;
 	static FTPClient client = null;
+	private static Modelo mimodelo;
 
 	/**
 	 * Launch the application.
@@ -33,7 +34,7 @@ public class DirigentesWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DirigentesWindow frame = new DirigentesWindow(client);
+					DirigentesWindow frame = new DirigentesWindow(client, mimodelo);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +46,8 @@ public class DirigentesWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DirigentesWindow(FTPClient cliente) {
+	public DirigentesWindow(FTPClient cliente, Modelo mimodelo) {
+		this.mimodelo=mimodelo;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 444);
 		contentPane = new JPanel();
@@ -59,7 +61,7 @@ public class DirigentesWindow extends JFrame {
 		list.setBounds(41, 31, 310, 332);
 		contentPane.add(list);
 		
-		JButton btnSalir = new JButton("Salir");
+		JButton btnSalir = new JButton(mimodelo.getTextoBotonSalir());
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				 // Cerrando sesión
@@ -77,7 +79,7 @@ public class DirigentesWindow extends JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	            LoginWindow login = new LoginWindow();
+	            LoginWindow login = new LoginWindow(mimodelo);
 	            String[] args = null;
 				LoginWindow.main(args);
 			}
@@ -96,7 +98,5 @@ public class DirigentesWindow extends JFrame {
 		list.setFont(new Font("Courier", Font.PLAIN, 12));
 		
 		list.removeAll();
-		
-		
 	}
 }

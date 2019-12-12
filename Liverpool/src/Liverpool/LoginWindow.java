@@ -17,6 +17,7 @@ public class LoginWindow {
 	private JTextField txtUsuario;
 	private JPasswordField psword;
 	private JButton btnSalir;
+	private static Modelo mimodelo;
 
 	/**
 	 * Launch the application.
@@ -25,7 +26,7 @@ public class LoginWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LoginWindow window = new LoginWindow();
+					LoginWindow window = new LoginWindow(mimodelo);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -37,7 +38,8 @@ public class LoginWindow {
 	/**
 	 * Create the application.
 	 */
-	public LoginWindow() {
+	public LoginWindow(Modelo mimodelo) {
+		this.mimodelo=mimodelo;
 		initialize();
 	}
 
@@ -50,7 +52,7 @@ public class LoginWindow {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JLabel lblUsuario = new JLabel("Usuario");
+		JLabel lblUsuario = new JLabel(mimodelo.getTextoLabelUsusario());
 		lblUsuario.setBounds(44, 53, 46, 14);
 		frame.getContentPane().add(lblUsuario);
 
@@ -59,7 +61,7 @@ public class LoginWindow {
 		frame.getContentPane().add(txtUsuario);
 		txtUsuario.setColumns(10);
 		
-		JLabel lblContraseña = new JLabel("Contrase\u00F1a");
+		JLabel lblContraseña = new JLabel(mimodelo.getTextoLabelContraseña());
 		lblContraseña.setBounds(44, 113, 71, 14);
 		frame.getContentPane().add(lblContraseña);
 		
@@ -67,7 +69,7 @@ public class LoginWindow {
 		psword.setBounds(129, 110, 118, 20);
 		frame.getContentPane().add(psword);
 		
-		JButton btnEntrar = new JButton("Entrar");
+		JButton btnEntrar = new JButton(mimodelo.getTextoBotonLoguearse());
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -77,9 +79,9 @@ public class LoginWindow {
 					ClientFTP conexion = new ClientFTP();
 					char[] arrayC = psword.getPassword();
 					String pass = new String(arrayC);
-					FTPClient cliente = conexion.Conexion(txtUsuario.getText().toString(), pass);
+					FTPClient cliente = conexion.Conexion(txtUsuario.getText().toString(), pass, mimodelo);
 					JOptionPane.showMessageDialog(null,"Correcto");
-					DirigentesWindow dirigentes = new DirigentesWindow(cliente);
+					DirigentesWindow dirigentes = new DirigentesWindow(cliente, mimodelo);
 					dirigentes.setVisible(true);
 				} else {
 					JOptionPane.showMessageDialog(null,"Introduce mini");
@@ -89,7 +91,7 @@ public class LoginWindow {
 		btnEntrar.setBounds(129, 154, 89, 23);
 		frame.getContentPane().add(btnEntrar);
 		
-		btnSalir = new JButton("Salir");
+		btnSalir = new JButton(mimodelo.getTextoBotonSalir());
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.dispose();
