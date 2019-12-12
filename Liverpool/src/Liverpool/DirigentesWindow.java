@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.List;
 import java.awt.Rectangle;
 
@@ -38,7 +39,7 @@ public class DirigentesWindow extends JFrame {
 	private static String pass = "";
 	static FTPClient client = null;
 	private static Modelo mimodelo;
-
+	static DefaultListModel lista;
 	/**
 	 * Create the frame.
 	 */
@@ -59,9 +60,11 @@ public class DirigentesWindow extends JFrame {
 		list.setBounds(41, 31, 310, 332);
 		
 		JScrollPane barraDesplazamiento = new JScrollPane(list);
-		barraDesplazamiento.setPreferredSize(new Dimension(335, 620));
-		barraDesplazamiento.setBounds(new Rectangle(5, 65, 335, 620));
-		contentPane.add(list);
+		barraDesplazamiento.setPreferredSize(new Dimension(335, 300));
+		barraDesplazamiento.setBounds(new Rectangle(5, 65, 335, 300));
+		barraDesplazamiento.setViewportView(list);
+		list.setLayoutOrientation(JList.VERTICAL);
+		contentPane.add(barraDesplazamiento);
 		try {
 			LlenarLista(cliente.getFiles(), "/");
 		} catch (IOException e) {
@@ -95,8 +98,7 @@ public class DirigentesWindow extends JFrame {
 				try {
 					cliente.getClient().changeWorkingDirectory(list.getSelectedValue().toString());
 				} catch (IOException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Seleccione un lugar donde subir el archivo.");
 				}
 				System.out.println(list.getSelectedValue().toString());
 				chooser.setDialogTitle("SELECCIONE EL ARCHIVO A SUBIR.");
@@ -135,7 +137,7 @@ public class DirigentesWindow extends JFrame {
 					cliente.getClient().changeWorkingDirectory(list.getSelectedValue().toString());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Seleccione un archivo para descargar.");
 				}
 				String file = list.getSelectedValue().toString();
 				BufferedOutputStream descarga = null;
@@ -165,6 +167,37 @@ public class DirigentesWindow extends JFrame {
 		JButton btnCrearCarpeta = new JButton("Crear Carpeta");
 		btnCrearCarpeta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String nombreCarpeta = JOptionPane.showInputDialog(null, "Introduce el nombre del directorio", "carpeta");
+				if(!(nombreCarpeta==null)) {
+					String directorio = "/";
+					if(!directorio.equals("/")) directorio = directorio +"/";
+					directorio += nombreCarpeta.trim();
+					
+					try {
+						if(cliente.getClient().makeDirectory(directorio)) {
+							String m = nombreCarpeta.trim() + " se ha creado correctamente.";
+							JOptionPane.showMessageDialog(null, m);
+							
+							FTPFile[] ff2 = null;
+							ff2 = cliente.client.listFiles();
+							
+							lista.removeAllElements();
+							
+							LlenarLista(ff2, "/");
+							SwingUtilities.updateComponentTreeUI(contentPane);
+							contentPane.invalidate();
+							contentPane.validate();
+							contentPane.repaint();
+						}
+					} catch (HeadlessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+				}
 			}
 		});
 		btnCrearCarpeta.setBounds(376, 92, 111, 23);
@@ -173,6 +206,11 @@ public class DirigentesWindow extends JFrame {
 		JButton btnBorrarCarpeta = new JButton("Eliminar Carpeta");
 		btnBorrarCarpeta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int index = list.getSelectedIndex();
+                System.out.println("index: " + index);
+                if (index > -1)
+                        lista.removeElementAt(index);
+
 			}
 		});
 		btnBorrarCarpeta.setBounds(509, 92, 134, 23);
@@ -194,18 +232,17 @@ public class DirigentesWindow extends JFrame {
 		btnEliminarArchivo.setBounds(441, 155, 124, 23);
 		contentPane.add(btnEliminarArchivo);
 	}
-
+	
 	public static void LlenarLista(FTPFile[] files, String direc2) throws IOException {
 		if (files == null)
 			return;
 
-		DefaultListModel lista = new DefaultListModel<>();
 		lista = new DefaultListModel<>();
 
 		list.setForeground(Color.blue);
 		list.setFont(new Font("Courier", Font.PLAIN, 12));
-
-		list.removeAll();
+				
+		lista.removeAllElements();
 
 		lista.addElement(direc2);
 
