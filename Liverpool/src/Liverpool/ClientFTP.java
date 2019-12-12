@@ -10,12 +10,15 @@ public class ClientFTP {
 	
 	private static Modelo mimodelo;
 	FTPFile[] files;
+	FTPClient client;
 	
+
+
 	public ClientFTP (String User, String Pass, Modelo mimodelo) {
 		this.mimodelo=mimodelo;
 		
 		// Creando nuestro objeto Client
-		FTPClient client = new FTPClient();
+		client = new FTPClient();
 
 		// Datos para conectar al servidor FTP
 		String ftp = mimodelo.getTextoIpFtp(); // También puede ir la IP
@@ -57,6 +60,13 @@ public class ClientFTP {
 
 	public void setFiles(FTPFile[] files) {
 		this.files = files;
+	}
+	public FTPClient getClient() {
+		return client;
+	}
+
+	public void setClient(FTPClient client) {
+		this.client = client;
 	}
 
 	
