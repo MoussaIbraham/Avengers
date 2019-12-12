@@ -15,7 +15,6 @@ public class Modelo {
 			TextoVentanaemergenteLoginError="Error",
 			
 			
-			
 			//Ventana menú
 			TextoVentanaMenu="Menu",
 			TextoBotonGestion="Open Management",
