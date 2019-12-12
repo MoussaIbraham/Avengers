@@ -6,9 +6,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/enano/OneDrive/Escritorio/com.mysql.jdbc_5.1.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/enano/OneDrive/Escritorio/commons-net-3.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/enano/OneDrive/Escritorio/commons-net-3.6-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/enano/OneDrive/Escritorio/commons-net-examples-3.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/com.mysql.jdbc_5.1.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/commons-net-3.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/commons-net-3.6-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/commons-net-examples-3.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
