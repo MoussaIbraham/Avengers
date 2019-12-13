@@ -29,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class DirigentesWindow extends JFrame {
@@ -43,10 +44,43 @@ public class DirigentesWindow extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
 	 */
-	public DirigentesWindow(String string, String pass, Modelo mimodelo) {
+	public DirigentesWindow(String string, String pass, Modelo mimodelo) throws SQLException {
 		this.mimodelo = mimodelo;
 		ClientFTP cliente = new ClientFTP(string, pass, mimodelo);
+		JButton btnSalir = new JButton(mimodelo.getTextoBotonSalir());
+		JButton btnSubirArchivo = new JButton(mimodelo.getTextoBotonsubida());
+		JButton btnDescargarArchivo = new JButton(mimodelo.getTextoBotonBajada());
+		JButton btnCrearCarpeta = new JButton(mimodelo.getTextoBotonCrear());
+		JButton btnBorrarCarpeta = new JButton(mimodelo.getTextoBotonBorrar());
+		JButton btnRenombrar = new JButton(mimodelo.getTextoBotonRenombrar());
+		ConexionConBD bd2 = new ConexionConBD(mimodelo);
+		System.out.println("ande va");
+		try {
+			bd2.setRs(bd2.sentencia.executeQuery(
+					"SELECT permissions.UP, permissions.DOWN, permissions.CREATEP, permissions.REMOVEP, permissions.RENAMEP FROM permissions LEFT JOIN users ON users.TYPE = permissions.TYPE where users.NICKNAME = '" + string + "' and users.PASWORD = '" + pass + "'"));
+			if (bd2.getRs().next()) {
+				System.out.println(bd2.getRs().getInt(1));
+				System.out.println(bd2.getRs().getInt(4));
+				if(bd2.getRs().getInt(1) == 0) {
+					btnSubirArchivo.setEnabled(false);
+				} if(bd2.getRs().getInt(2) == 0) {
+					btnDescargarArchivo.setEnabled(false);
+				} if(bd2.getRs().getInt(3) == 0) {
+					btnCrearCarpeta.setEnabled(false);
+				} if(bd2.getRs().getInt(4) == 0) {
+					btnBorrarCarpeta.setEnabled(false);
+				} if(bd2.getRs().getInt(5) == 0) {
+					btnRenombrar.setEnabled(false);
+				} 
+			}
+		} catch (SQLException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		}
+		
+		System.out.println("loco");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 444);
 		contentPane = new JPanel();
@@ -72,7 +106,7 @@ public class DirigentesWindow extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		JButton btnSalir = new JButton(mimodelo.getTextoBotonSalir());
+		
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				LoginWindow login = new LoginWindow(mimodelo);
@@ -84,7 +118,7 @@ public class DirigentesWindow extends JFrame {
 		btnSalir.setBounds(461, 317, 89, 23);
 		contentPane.add(btnSalir);
 
-		JButton btnSubirArchivo = new JButton(mimodelo.getTextoBotonsubida());
+		
 		btnSubirArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -130,7 +164,7 @@ public class DirigentesWindow extends JFrame {
 		btnSubirArchivo.setBounds(376, 45, 111, 23);
 		contentPane.add(btnSubirArchivo);
 
-		JButton btnDescargarArchivo = new JButton(mimodelo.getTextoBotonBajada());
+		
 		btnDescargarArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -164,7 +198,7 @@ public class DirigentesWindow extends JFrame {
 		btnDescargarArchivo.setBounds(509, 45, 134, 23);
 		contentPane.add(btnDescargarArchivo);
 
-		JButton btnCrearCarpeta = new JButton(mimodelo.getTextoBotonCrear());
+	
 		btnCrearCarpeta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombreCarpeta = JOptionPane.showInputDialog(null, mimodelo.getTextoGestionAyudaCrear(),
@@ -204,7 +238,7 @@ public class DirigentesWindow extends JFrame {
 		btnCrearCarpeta.setBounds(376, 92, 111, 23);
 		contentPane.add(btnCrearCarpeta);
 
-		JButton btnBorrarCarpeta = new JButton(mimodelo.getTextoBotonBorrar());
+		
 		btnBorrarCarpeta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = list.getSelectedIndex();
@@ -230,15 +264,16 @@ public class DirigentesWindow extends JFrame {
 		btnBorrarCarpeta.setBounds(509, 92, 134, 23);
 		contentPane.add(btnBorrarCarpeta);
 
-		JButton btnRenombrar = new JButton(mimodelo.getTextoBotonRenombrar());
+		
 		btnRenombrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Llamar ventana renombrar
 				String fichero = list.getSelectedValue().toString();
-				if(fichero.equals("")) {
+				if (fichero.equals("")) {
 					JOptionPane.showMessageDialog(null, "Seleccione algun archivo al cual cambiar el nombre.");
 				} else {
-					String nuevoNombre = JOptionPane.showInputDialog(null, "Elija el nuevo nombre para el archivo.", fichero);
+					String nuevoNombre = JOptionPane.showInputDialog(null, "Elija el nuevo nombre para el archivo.",
+							fichero);
 					try {
 						cliente.client.rename(fichero, nuevoNombre);
 						FTPFile[] ff2 = null;
@@ -252,8 +287,7 @@ public class DirigentesWindow extends JFrame {
 						e.printStackTrace();
 					}
 				}
-				
-				
+
 			}
 		});
 		btnRenombrar.setBounds(461, 239, 89, 23);
@@ -263,6 +297,24 @@ public class DirigentesWindow extends JFrame {
 		btnEliminarArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Llamar ventana Borrar
+				int index = list.getSelectedIndex();
+				String fichero = list.getSelectedValue().toString();
+				if (fichero.substring(0, 1).equals("/")) {
+					JOptionPane.showMessageDialog(null, "Seleccione un archivo.");
+				} else {
+					int Seleccion = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el archivo seleccionado?");
+					if (Seleccion == JOptionPane.OK_OPTION) {
+						try {
+							if (index > -1)
+								lista.removeElementAt(index);
+							cliente.client.deleteFile(fichero);
+							JOptionPane.showMessageDialog(null, "El archivo se ha borrado correctamente.");
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+				}
+
 			}
 		});
 		btnEliminarArchivo.setBounds(441, 155, 124, 23);
