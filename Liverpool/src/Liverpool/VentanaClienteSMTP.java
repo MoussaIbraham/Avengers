@@ -6,26 +6,39 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import org.apache.commons.net.smtp.AuthenticatingSMTPClient;
 import org.apache.commons.net.smtp.SMTPReply;
 import org.apache.commons.net.smtp.SimpleSMTPHeader;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.io.ObjectInputStream.GetField;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
+import java.util.Properties;
 import java.awt.event.ActionEvent;
 
 public class VentanaClienteSMTP extends JFrame {
@@ -35,13 +48,13 @@ public class VentanaClienteSMTP extends JFrame {
 	private JTextField subject;
 	private JTextField bodyMenssage;
 	Modelo modelo = new Modelo();
-	// se crea cliente SMTP seguro
-	AuthenticatingSMTPClient client = new AuthenticatingSMTPClient();
+	ArrayList<String> filename = new ArrayList<String>();
+	ArrayList<String> filepath = new ArrayList<String>();
 	/*
 	 * Datos del usuario y conexión
 	 */
 	String username = "dmatasalazar.sanjose@alumnado.fundacionloyola.net";//modelo.getAlmacenNombreUsuario();
-	String password = "21485902"; //modelo.getAlmacenContraseña();
+	String pasword = "21485902"; //modelo.getAlmacenContraseña();
 	String server = modelo.getTextoServerSMTP();
 	int puerto = 25;
 	/**
@@ -59,100 +72,57 @@ public class VentanaClienteSMTP extends JFrame {
 			}
 		});
 	}
+	
+	public boolean enviarCorreo() {
+		try { 
+		Properties p = System.getProperties();
+		p.put("mail.smtp.host", "smtp.gmail.com");
+	    p.setProperty("mail.smtp.starttls.enable", "true"); 
+	    p.setProperty("mail.smtp.port", "587"); 
+	    p.setProperty("mail.smtp.user", username);
+	    p.setProperty("mail.smtp.auth", "true");
+	    
 
-	public void ClienteSMTP() {
-		 try {
-             int respuesta;
-             // CreaciÃ³n de la clave para establecer un canal seguro
-             KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-             kmf.init(null, null);
-             KeyManager km = kmf.getKeyManagers()[0];
-             /*
-              *  nos conectamos al servidor SMTP
-              */
-             client.connect(server, puerto);
-             System.out.println("1 - " + client.getReplyString());
-             /*
-              * the key to secure communication is established
-              */
-             client.setKeyManager(km);
-             respuesta = client.getReplyCode();
-             if (!SMTPReply.isPositiveCompletion(respuesta)) {
-                 client.disconnect();
-                 System.err.println("CONEXIÃ“N RECHAZADA.");
-                 System.exit(1);
-             }
-             // se envia el commando EHLO
-             client.ehlo(server);// necesario
-             System.out.println("2 - " + client.getReplyString());
-             // Se ejecuta el comando STARTTLS y se comprueba si es true
-             if (client.execTLS()) {
-                 System.out.println("3 - " + client.getReplyString());
-                 // se realiza la autenticaciÃ³n con el servidor
-                 if (client.auth(AuthenticatingSMTPClient.AUTH_METHOD.PLAIN, username, password)) {
-
-                     System.out.println("4 - " + client.getReplyString());
-                     String destinol = addressee.getText();
-                     String asunto = subject.getText();
-                     String mensaje = bodyMenssage.getText();
-
-                     // se crea la cabecera
-                     SimpleSMTPHeader cabecera = new SimpleSMTPHeader(username, destinol, asunto);
-
-                     // el nombre de usuario y el email de origen coinciden
-                     client.setSender(username);
-                     client.addRecipient(destinol);
-                     System.out.println("5 - " + client.getReplyString());
-
-                     // se envia DATA
-                     Writer writer = client.sendMessageData();
-                     if (writer == null) { // fallo
-                         System.out.println("FALLO AL ENVIAR DATA.");
-                         System.exit(1);
-                     }
-                     writer.write(cabecera.toString()); // cabecera
-                     writer.write(mensaje);// luego mensaje
-                     writer.close();
-                     System.out.println("6 - " + client.getReplyString());
-                     boolean exito = client.completePendingCommand();
-                     System.out.println("7 - " + client.getReplyString());
-                     if (!exito) { // fallo
-                         System.out.println("FALLO AL FINALIZAR TRANSACCIÃ“N.");
-                         System.exit(1);
-                     } else {
-                         JOptionPane.showMessageDialog(null, "MENSAJE ENVIADO");
-                     }
-                 } else {
-                     System.out.println("USUARIO NO AUTENTICADO.");
-                     JOptionPane.showMessageDialog(null, "CORREO O CONTRASEÃ‘A ERRÃ“NEA");
-                     this.dispose();
-                 }
-             } else {
-                 System.out.println("FALLO AL EJECUTAR STARTTLS.");
-             }
-         } catch (IOException ioe) {
-             System.err.println("Could not connect to server.");
-             ioe.printStackTrace();
-             System.exit(1);
-             try {
-                 client.disconnect();
-             } catch (IOException f) {
-                 f.printStackTrace();
-             }
-             System.out.println("Fin de envio.");
-             System.exit(0);
-         } catch (NoSuchAlgorithmException nsa) {
-             nsa.printStackTrace();
-         } catch (UnrecoverableKeyException uke) {
-             uke.printStackTrace();
-         } catch (KeyStoreException kse) {
-             kse.printStackTrace();
-         } catch (InvalidKeyException ike) {
-             ike.printStackTrace();
-         } catch (InvalidKeySpecException ikse) {
-             ikse.printStackTrace();
-         }
+	    Session session = Session.getInstance(p);
+	    session.setDebug(true);
+	    /*
+	     * Texto
+	     */
+	    BodyPart text = new MimeBodyPart();
+	    text.setText(bodyMenssage.getText());
+	    MimeMultipart m = new MimeMultipart();
+	    m.addBodyPart(text);// Add text  
+	    MimeMessage message = new MimeMessage(session);
+	    message.setFrom(new InternetAddress(username));
+	    message.addRecipient(Message.RecipientType.TO, new InternetAddress(addressee.getText()));
+	    message.setSubject(subject.getText());  
+	    /*
+	     * Adjuntos
+	     */
+	    if(filepath.size()!=0) {
+	    	for(int i=0;i<filepath.size();i++) {
+	    	BodyPart adjuntfile = new MimeBodyPart();
+		    adjuntfile.setDataHandler(new DataHandler(new FileDataSource(filepath.get(i))));
+		    adjuntfile.setFileName(filename.get(i));
+		    m.addBodyPart(adjuntfile);
+	    	}
+	    }
+	    // Add Text and File
+	    message.setContent(m);
+	    /*
+	     * 
+	     */
+	    Transport t = session.getTransport("smtp");
+	    t.connect(username, pasword);
+	    t.send(message,message.getRecipients(Message.RecipientType.TO));
+	    t.close();
+	        return true;
+	    }
+	    catch (MessagingException me) {
+	        return false;
+	    }
 	}
+
 
 	/**
 	 * Create the frame.
@@ -172,7 +142,12 @@ public class VentanaClienteSMTP extends JFrame {
 				if (addressee.getText().equals("") || subject.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "RELLENE LOS CAMPOS");
 				} else {
-					ClienteSMTP();
+					Boolean correo = enviarCorreo();
+					if(correo = true) {
+						JOptionPane.showMessageDialog(null, "EMAIL CORRECT");
+					}else {
+						JOptionPane.showMessageDialog(null, "FAIL TO SEND EMAIL");
+					}
 				}
 			}
 		});
@@ -184,7 +159,7 @@ public class VentanaClienteSMTP extends JFrame {
 		assunt.add(addressee);
 		addressee.setColumns(10);
 
-		JLabel lblNewLabel = new JLabel(modelo.getTextoSMTPLabelAyudaDestinatario());
+		JLabel lblNewLabel = new JLabel(modelo.getTextoSMTPLabelDestinatario());
 		lblNewLabel.setBounds(10, 32, 61, 13);
 		assunt.add(lblNewLabel);
 
@@ -213,6 +188,20 @@ public class VentanaClienteSMTP extends JFrame {
 		JButton btnNewButton = new JButton(modelo.getTextoSMTPLabelAñadirArchivo());
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				JFileChooser f;
+				File file;
+				f = new JFileChooser();
+				f.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				f.setDialogTitle("Select to file where you Up");
+	
+				int returnVal = f.showDialog(f, "UP");
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					file = f.getSelectedFile();
+					String archivo = file.getAbsolutePath();
+					String nombreArchivo = file.getName();
+					filename.add(nombreArchivo);
+					filepath.add(nombreArchivo);
+			}
 			}
 		});
 		btnNewButton.setBounds(157, 232, 85, 21);
