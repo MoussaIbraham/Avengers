@@ -12,9 +12,11 @@ public class Modelo {
 			TextoBotonLoguearse="Enter",
 			TextoBotonCancelar="Cancel",
 			TextoVentanaemergenteLoginExito="Connected",
-			TextoVentanaemergenteLoginError="Error",
+			TextoVentanaemergenteLoginError="Error, please Introduce a correct user or password.",
 			
-			
+			//Errores de la base de datos
+			TextoErrorBd1="Error al encontrar la Base de Datos",
+			TextoErrorBd2="Error al encontrar el driver de la Base de Datos",
 			
 			//Ventana menú
 			TextoVentanaMenu="Menu",
@@ -25,17 +27,36 @@ public class Modelo {
 			
 			//Ventana principal
 			TextoVentanaPrincipal="Management",
-
 			TextoLabelbotonesGestion="File management",
+			
+			//Crear carpeta gestion
 			TextoBotonCrear="Create Folder",
+			TextoGestionAyudaCrear="Set the name of the folder you want to create",
+			TextoGestionAyudaCrear2="Folder",
+			TextoVentanaEmergenteGestionCrearCarpetaExito=" was correctly created",
+			
+			
 			TextoBotonRenombrar="Rename",
-			TextoBotonBorrar="Delete",
+			TextoBotonBorrar="Delete Folder",
+			TextoBotonBorrar2="Delete File",
 			TextoBotonCerrar="Close",
 			
+			//Subidas y bajadas
 			TextoLabelBotonesSubidaBajada="Uploads and Downloads",
 			TextoBotonsubida="Upload",
 			TextoBotonBajada="Download",
-			TextoVentanaEmergenteGestionSubidaExitosa="File saved",
+			//Gestion subida
+			TextoVentanaEmergenteGestionSubidaExitosa="File saved successfuly",
+			TextoVentanaEmergenteGestionSubidaFallo="Error, you haven't select anything",
+			TextoGestionAyudaSubida="Select where you want to upload the file.",
+			TextoGestionAyudaSubida2="Select the file you want to upload.",
+			TextoGestionAyudaSubida3="Select.",
+			//Gestion bajada
+			TextoGestionAyudaBajada="Select the file you want to download.",
+			TextoVentanaEmergenteGestionBajadaExitosa="File saved successfuly",
+			TextoVentanaEmergenteGestionBajadaFallo="Error, the file couldn't be downloaded",
+			
+			
 			
 			//Ventana Crear Carpeta
 			TextoVentanaCrearCarpeta="Create folder",
@@ -53,6 +74,115 @@ public class Modelo {
 	
 			//Otros textos
 			TextoIpFtp="192.168.1.135";
+
+	
+	
+	
+	
+	
+	public String getTextoErrorBd1() {
+		return TextoErrorBd1;
+	}
+
+	public void setTextoErrorBd1(String textoErrorBd1) {
+		TextoErrorBd1 = textoErrorBd1;
+	}
+
+	public String getTextoErrorBd2() {
+		return TextoErrorBd2;
+	}
+
+	public void setTextoErrorBd2(String textoErrorBd2) {
+		TextoErrorBd2 = textoErrorBd2;
+	}
+
+	public String getTextoBotonBorrar2() {
+		return TextoBotonBorrar2;
+	}
+
+	public void setTextoBotonBorrar2(String textoBotonBorrar2) {
+		TextoBotonBorrar2 = textoBotonBorrar2;
+	}
+
+	public String getTextoGestionAyudaCrear() {
+		return TextoGestionAyudaCrear;
+	}
+
+	public void setTextoGestionAyudaCrear(String textoGestionAyudaCrear) {
+		TextoGestionAyudaCrear = textoGestionAyudaCrear;
+	}
+
+	public String getTextoGestionAyudaCrear2() {
+		return TextoGestionAyudaCrear2;
+	}
+
+	public void setTextoGestionAyudaCrear2(String textoGestionAyudaCrear2) {
+		TextoGestionAyudaCrear2 = textoGestionAyudaCrear2;
+	}
+
+	public String getTextoVentanaEmergenteGestionCrearCarpetaExito() {
+		return TextoVentanaEmergenteGestionCrearCarpetaExito;
+	}
+
+	public void setTextoVentanaEmergenteGestionCrearCarpetaExito(String textoVentanaEmergenteGestionCrearCarpetaExito) {
+		TextoVentanaEmergenteGestionCrearCarpetaExito = textoVentanaEmergenteGestionCrearCarpetaExito;
+	}
+
+	public String getTextoGestionAyudaSubida() {
+		return TextoGestionAyudaSubida;
+	}
+
+	public void setTextoGestionAyudaSubida(String textoGestionAyudaSubida) {
+		TextoGestionAyudaSubida = textoGestionAyudaSubida;
+	}
+
+	public String getTextoGestionAyudaSubida2() {
+		return TextoGestionAyudaSubida2;
+	}
+
+	public void setTextoGestionAyudaSubida2(String textoGestionAyudaSubida2) {
+		TextoGestionAyudaSubida2 = textoGestionAyudaSubida2;
+	}
+
+	public String getTextoGestionAyudaSubida3() {
+		return TextoGestionAyudaSubida3;
+	}
+
+	public void setTextoGestionAyudaSubida3(String textoGestionAyudaSubida3) {
+		TextoGestionAyudaSubida3 = textoGestionAyudaSubida3;
+	}
+
+	public String getTextoGestionAyudaBajada() {
+		return TextoGestionAyudaBajada;
+	}
+
+	public void setTextoGestionAyudaBajada(String textoGestionAyudaBajada) {
+		TextoGestionAyudaBajada = textoGestionAyudaBajada;
+	}
+
+	public String getTextoVentanaEmergenteGestionBajadaExitosa() {
+		return TextoVentanaEmergenteGestionBajadaExitosa;
+	}
+
+	public void setTextoVentanaEmergenteGestionBajadaExitosa(String textoVentanaEmergenteGestionBajadaExitosa) {
+		TextoVentanaEmergenteGestionBajadaExitosa = textoVentanaEmergenteGestionBajadaExitosa;
+	}
+
+	public String getTextoVentanaEmergenteGestionBajadaFallo() {
+		return TextoVentanaEmergenteGestionBajadaFallo;
+	}
+
+	public void setTextoVentanaEmergenteGestionBajadaFallo(String textoVentanaEmergenteGestionBajadaFallo) {
+		TextoVentanaEmergenteGestionBajadaFallo = textoVentanaEmergenteGestionBajadaFallo;
+	}
+
+	public String getTextoVentanaEmergenteGestionSubidaFallo() {
+		return TextoVentanaEmergenteGestionSubidaFallo;
+	}
+
+	public void setTextoVentanaEmergenteGestionSubidaFallo(String textoVentanaEmergenteGestionSubidaFallo) {
+		TextoVentanaEmergenteGestionSubidaFallo = textoVentanaEmergenteGestionSubidaFallo;
+	}
 
 	public String getTextoVentanaLogin() {
 		return TextoVentanaLogin;

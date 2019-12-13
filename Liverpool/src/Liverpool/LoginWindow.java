@@ -75,7 +75,7 @@ public class LoginWindow {
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				ConexionConBD bd = new ConexionConBD();
+				ConexionConBD bd = new ConexionConBD(mimodelo);
 
 				char[] arrayC = psword.getPassword();
 				String pass = new String(arrayC);
@@ -91,10 +91,10 @@ public class LoginWindow {
 						window.frame.dispose();
 						bd.cerrarConexion();
 					} else {
-						JOptionPane.showMessageDialog(null, "Introduzca el usuario o contraseña correctamente.");
+						JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaemergenteLoginError());
 					}
 				} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, "Introduzca el usuario o contraseña correctamente.");
+					JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaemergenteLoginError());
 				}}
 			}
 		);

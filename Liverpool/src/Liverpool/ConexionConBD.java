@@ -2,12 +2,16 @@ package Liverpool;
 
 import java.sql.*;
 
+import javax.swing.JOptionPane;
+
 public class ConexionConBD {
 	Connection conexion;
 	Statement sentencia;
 	ResultSet rs;
+	Modelo mimodelo;
 
-	public ConexionConBD() {
+	public ConexionConBD(Modelo mimodelo) {
+		this.mimodelo=mimodelo;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			try {
@@ -15,10 +19,10 @@ public class ConexionConBD {
 				sentencia = conexion.createStatement(); 
 				rs= sentencia.getResultSet();
 			} catch (SQLException e) {
-				System.out.println("Error al encontrar la Base de Datos");
+				JOptionPane.showMessageDialog(null,mimodelo.getTextoErrorBd1()); 
 			}
 		} catch (ClassNotFoundException e) {
-			System.out.println("Error al encontrar el driver de la Base de Datos");
+			JOptionPane.showMessageDialog(null,mimodelo.getTextoErrorBd2()); 
 		}
 	}
 	

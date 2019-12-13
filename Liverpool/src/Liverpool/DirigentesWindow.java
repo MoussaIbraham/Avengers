@@ -83,7 +83,7 @@ public class DirigentesWindow extends JFrame {
 		btnSalir.setBounds(461, 317, 89, 23);
 		contentPane.add(btnSalir);
 		
-		JButton btnSubirArchivo = new JButton("Subir Archivo");
+		JButton btnSubirArchivo = new JButton(mimodelo.getTextoBotonsubida());
 		btnSubirArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -98,11 +98,11 @@ public class DirigentesWindow extends JFrame {
 				try {
 					cliente.getClient().changeWorkingDirectory(list.getSelectedValue().toString());
 				} catch (IOException e2) {
-					JOptionPane.showMessageDialog(null, "Seleccione un lugar donde subir el archivo.");
+					JOptionPane.showMessageDialog(null, mimodelo.getTextoGestionAyudaSubida());
 				}
 				System.out.println(list.getSelectedValue().toString());
-				chooser.setDialogTitle("SELECCIONE EL ARCHIVO A SUBIR.");
-				int returnVal = chooser.showDialog(chooser, "Seleccionar");
+				chooser.setDialogTitle(mimodelo.getTextoGestionAyudaSubida2());
+				int returnVal = chooser.showDialog(chooser, mimodelo.getTextoGestionAyudaSubida3());
 				if(returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = chooser.getSelectedFile();
 					strDirectorio = file.getAbsolutePath();
@@ -115,13 +115,13 @@ public class DirigentesWindow extends JFrame {
 					try {
 						System.out.println(file.getName());
 						cliente.getClient().storeFile(file.getName(), in);
-						System.out.println("Se ha guardado el archivo correctamente");
+						JOptionPane.showMessageDialog(null,mimodelo.getTextoVentanaEmergenteGestionSubidaExitosa());
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
 				} 
 				if(strDirectorio.equals("")) {
-					JOptionPane.showMessageDialog(null, "No se ha seleccionado ningun archivo.");
+					JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionSubidaFallo());
 				}
 				
 				
@@ -130,14 +130,14 @@ public class DirigentesWindow extends JFrame {
 		btnSubirArchivo.setBounds(376, 45, 111, 23);
 		contentPane.add(btnSubirArchivo);
 		
-		JButton btnDescargarArchivo = new JButton("Descargar Archivo");
+		JButton btnDescargarArchivo = new JButton(mimodelo.getTextoBotonBajada());
 		btnDescargarArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					cliente.getClient().changeWorkingDirectory(list.getSelectedValue().toString());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, "Seleccione un archivo para descargar.");
+					JOptionPane.showMessageDialog(null, mimodelo.getTextoGestionAyudaBajada());
 				}
 				String file = list.getSelectedValue().toString();
 				BufferedOutputStream descarga = null;
@@ -150,9 +150,9 @@ public class DirigentesWindow extends JFrame {
 				}
 				try {
 					if(cliente.getClient().retrieveFile(file, descarga)) {
-						System.out.println("Recuperado correctamente.");
+						JOptionPane.showMessageDialog(null,mimodelo.getTextoVentanaEmergenteGestionBajadaExitosa());
 					} else {
-						System.out.println("No se ha podido descargar.");
+						JOptionPane.showMessageDialog(null,mimodelo.getTextoVentanaEmergenteGestionBajadaFallo());
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -164,10 +164,12 @@ public class DirigentesWindow extends JFrame {
 		btnDescargarArchivo.setBounds(509, 45, 134, 23);
 		contentPane.add(btnDescargarArchivo);
 		
-		JButton btnCrearCarpeta = new JButton("Crear Carpeta");
+		JButton btnCrearCarpeta = new JButton(mimodelo.getTextoBotonCrear());
 		btnCrearCarpeta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String nombreCarpeta = JOptionPane.showInputDialog(null, "Introduce el nombre del directorio", "carpeta");
+				String nombreCarpeta = JOptionPane.showInputDialog(null, mimodelo.getTextoGestionAyudaCrear(),
+						mimodelo.getTextoGestionAyudaCrear2());
+				
 				if(!(nombreCarpeta==null)) {
 					String directorio = "/";
 					if(!directorio.equals("/")) directorio = directorio +"/";
@@ -175,7 +177,7 @@ public class DirigentesWindow extends JFrame {
 					
 					try {
 						if(cliente.getClient().makeDirectory(directorio)) {
-							String m = nombreCarpeta.trim() + " se ha creado correctamente.";
+							String m = nombreCarpeta.trim() + mimodelo.getTextoVentanaEmergenteGestionCrearCarpetaExito();
 							JOptionPane.showMessageDialog(null, m);
 							
 							FTPFile[] ff2 = null;
@@ -203,7 +205,7 @@ public class DirigentesWindow extends JFrame {
 		btnCrearCarpeta.setBounds(376, 92, 111, 23);
 		contentPane.add(btnCrearCarpeta);
 		
-		JButton btnBorrarCarpeta = new JButton("Eliminar Carpeta");
+		JButton btnBorrarCarpeta = new JButton(mimodelo.getTextoBotonBorrar());
 		btnBorrarCarpeta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = list.getSelectedIndex();
@@ -216,17 +218,19 @@ public class DirigentesWindow extends JFrame {
 		btnBorrarCarpeta.setBounds(509, 92, 134, 23);
 		contentPane.add(btnBorrarCarpeta);
 		
-		JButton btnRenombrar = new JButton("Renombrar");
+		JButton btnRenombrar = new JButton(mimodelo.getTextoBotonRenombrar());
 		btnRenombrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//Llamar ventana renombrar
 			}
 		});
 		btnRenombrar.setBounds(461, 239, 89, 23);
 		contentPane.add(btnRenombrar);
 		
-		JButton btnEliminarArchivo = new JButton("Eliminar Archivo");
+		JButton btnEliminarArchivo = new JButton(mimodelo.getTextoBotonBorrar2());
 		btnEliminarArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Llamar ventana Borrar
 			}
 		});
 		btnEliminarArchivo.setBounds(441, 155, 124, 23);
