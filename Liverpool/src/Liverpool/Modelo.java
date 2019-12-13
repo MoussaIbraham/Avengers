@@ -76,6 +76,7 @@ public class Modelo {
 	
 			//Otros textos
 			TextoIpFtp="192.168.1.135",
+			
 
 			//Ventana correo pop
 			TextoPOPBotonAbrirCorreo="Open Mail",
