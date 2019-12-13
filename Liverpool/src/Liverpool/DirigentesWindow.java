@@ -40,6 +40,7 @@ public class DirigentesWindow extends JFrame {
 	static FTPClient client = null;
 	private static Modelo mimodelo;
 	static DefaultListModel lista;
+
 	/**
 	 * Create the frame.
 	 */
@@ -58,7 +59,7 @@ public class DirigentesWindow extends JFrame {
 
 		list = new JList();
 		list.setBounds(41, 31, 310, 332);
-		
+
 		JScrollPane barraDesplazamiento = new JScrollPane(list);
 		barraDesplazamiento.setPreferredSize(new Dimension(335, 300));
 		barraDesplazamiento.setBounds(new Rectangle(5, 65, 335, 300));
@@ -82,7 +83,7 @@ public class DirigentesWindow extends JFrame {
 		});
 		btnSalir.setBounds(461, 317, 89, 23);
 		contentPane.add(btnSalir);
-		
+
 		JButton btnSubirArchivo = new JButton(mimodelo.getTextoBotonsubida());
 		btnSubirArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -103,7 +104,7 @@ public class DirigentesWindow extends JFrame {
 				System.out.println(list.getSelectedValue().toString());
 				chooser.setDialogTitle(mimodelo.getTextoGestionAyudaSubida2());
 				int returnVal = chooser.showDialog(chooser, mimodelo.getTextoGestionAyudaSubida3());
-				if(returnVal == JFileChooser.APPROVE_OPTION) {
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = chooser.getSelectedFile();
 					strDirectorio = file.getAbsolutePath();
 					BufferedInputStream in = null;
@@ -115,21 +116,20 @@ public class DirigentesWindow extends JFrame {
 					try {
 						System.out.println(file.getName());
 						cliente.getClient().storeFile(file.getName(), in);
-						JOptionPane.showMessageDialog(null,mimodelo.getTextoVentanaEmergenteGestionSubidaExitosa());
+						JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionSubidaExitosa());
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-				} 
-				if(strDirectorio.equals("")) {
+				}
+				if (strDirectorio.equals("")) {
 					JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionSubidaFallo());
 				}
-				
-				
+
 			}
 		});
 		btnSubirArchivo.setBounds(376, 45, 111, 23);
 		contentPane.add(btnSubirArchivo);
-		
+
 		JButton btnDescargarArchivo = new JButton(mimodelo.getTextoBotonBajada());
 		btnDescargarArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -149,47 +149,46 @@ public class DirigentesWindow extends JFrame {
 					e1.printStackTrace();
 				}
 				try {
-					if(cliente.getClient().retrieveFile(file, descarga)) {
-						JOptionPane.showMessageDialog(null,mimodelo.getTextoVentanaEmergenteGestionBajadaExitosa());
+					if (cliente.getClient().retrieveFile(file, descarga)) {
+						JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionBajadaExitosa());
 					} else {
-						JOptionPane.showMessageDialog(null,mimodelo.getTextoVentanaEmergenteGestionBajadaFallo());
+						JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionBajadaFallo());
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
 		btnDescargarArchivo.setBounds(509, 45, 134, 23);
 		contentPane.add(btnDescargarArchivo);
-		
+
 		JButton btnCrearCarpeta = new JButton(mimodelo.getTextoBotonCrear());
 		btnCrearCarpeta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombreCarpeta = JOptionPane.showInputDialog(null, mimodelo.getTextoGestionAyudaCrear(),
 						mimodelo.getTextoGestionAyudaCrear2());
-				
-				if(!(nombreCarpeta==null)) {
+
+				if (!(nombreCarpeta == null)) {
 					String directorio = "/";
-					if(!directorio.equals("/")) directorio = directorio +"/";
+					if (!directorio.equals("/"))
+						directorio = directorio + "/";
 					directorio += nombreCarpeta.trim();
-					
+
 					try {
-						if(cliente.getClient().makeDirectory(directorio)) {
-							String m = nombreCarpeta.trim() + mimodelo.getTextoVentanaEmergenteGestionCrearCarpetaExito();
+						if (cliente.getClient().makeDirectory(directorio)) {
+							String m = nombreCarpeta.trim()
+									+ mimodelo.getTextoVentanaEmergenteGestionCrearCarpetaExito();
 							JOptionPane.showMessageDialog(null, m);
-							
+
 							FTPFile[] ff2 = null;
 							ff2 = cliente.client.listFiles();
-							
+
 							lista.removeAllElements();
-							
+
 							LlenarLista(ff2, "/");
 							SwingUtilities.updateComponentTreeUI(contentPane);
-							contentPane.invalidate();
-							contentPane.validate();
-							contentPane.repaint();
 						}
 					} catch (HeadlessException e1) {
 						// TODO Auto-generated catch block
@@ -198,61 +197,78 @@ public class DirigentesWindow extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					
+
 				}
 			}
 		});
 		btnCrearCarpeta.setBounds(376, 92, 111, 23);
 		contentPane.add(btnCrearCarpeta);
-		
+
 		JButton btnBorrarCarpeta = new JButton(mimodelo.getTextoBotonBorrar());
 		btnBorrarCarpeta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = list.getSelectedIndex();
 				String fichero = list.getSelectedValue().toString();
-                System.out.println("index: " + index);
-                if(fichero.substring(0, 1).equals("/")) {
-                	int Seleccion = JOptionPane.showConfirmDialog(null,"¿Desea eliminar la carpeta seleccionada?");
-                	if(Seleccion == JOptionPane.OK_OPTION) {
-                		try {
-                			 if (index > -1)
-                                 lista.removeElementAt(index);
-                			 System.out.println(fichero);
+				if (fichero.substring(0, 1).equals("/")) {
+					int Seleccion = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la carpeta seleccionada?");
+					if (Seleccion == JOptionPane.OK_OPTION) {
+						try {
+							if (index > -1)
+								lista.removeElementAt(index);
 							cliente.client.removeDirectory(fichero);
 							JOptionPane.showMessageDialog(null, "La carpeta se ha borrado correctamente.");
 						} catch (IOException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-                	}
-                } else {
-                	JOptionPane.showMessageDialog(null, "Seleccione una carpeta.");
-                }
-               
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Seleccione una carpeta.");
 				}
+
+			}
 		});
 		btnBorrarCarpeta.setBounds(509, 92, 134, 23);
 		contentPane.add(btnBorrarCarpeta);
-		
+
 		JButton btnRenombrar = new JButton(mimodelo.getTextoBotonRenombrar());
 		btnRenombrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//Llamar ventana renombrar
+				// Llamar ventana renombrar
+				String fichero = list.getSelectedValue().toString();
+				if(fichero.equals("")) {
+					JOptionPane.showMessageDialog(null, "Seleccione algun archivo al cual cambiar el nombre.");
+				} else {
+					String nuevoNombre = JOptionPane.showInputDialog(null, "Elija el nuevo nombre para el archivo.", fichero);
+					try {
+						cliente.client.rename(fichero, nuevoNombre);
+						FTPFile[] ff2 = null;
+						ff2 = cliente.client.listFiles();
+
+						lista.removeAllElements();
+
+						LlenarLista(ff2, "/");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				
 			}
 		});
 		btnRenombrar.setBounds(461, 239, 89, 23);
 		contentPane.add(btnRenombrar);
-		
+
 		JButton btnEliminarArchivo = new JButton(mimodelo.getTextoBotonBorrar2());
 		btnEliminarArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Llamar ventana Borrar
+				// Llamar ventana Borrar
 			}
 		});
 		btnEliminarArchivo.setBounds(441, 155, 124, 23);
 		contentPane.add(btnEliminarArchivo);
 	}
-	
+
 	public static void LlenarLista(FTPFile[] files, String direc2) throws IOException {
 		if (files == null)
 			return;
@@ -261,7 +277,7 @@ public class DirigentesWindow extends JFrame {
 
 		list.setForeground(Color.blue);
 		list.setFont(new Font("Courier", Font.PLAIN, 12));
-				
+
 		lista.removeAllElements();
 
 		lista.addElement(direc2);

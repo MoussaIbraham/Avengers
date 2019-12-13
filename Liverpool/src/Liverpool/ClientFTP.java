@@ -35,15 +35,6 @@ public class ClientFTP {
 				files = client.listFiles();
 				client.setFileType(FTP.BINARY_FILE_TYPE);
 
-				String filename = "miarchivo.txt";
-				BufferedInputStream in = new BufferedInputStream(
-						new FileInputStream("C:\\Users\\enano\\OneDrive\\Escritorio\\SIGE ODOO\\" + filename));
-				System.out.println(mimodelo.getTextoVentanaEmergenteGestionSubidaExitosa()); // Cambiar esto por ventana
-																								// emergente
-				// Guardando el archivo en el servidor
-				client.storeFile(filename, in);
-				in.close();
-
 			} else {
 				System.out.println(mimodelo.getTextoVentanaemergenteLoginError()); // Cambiar esto por ventana emergente
 			}
