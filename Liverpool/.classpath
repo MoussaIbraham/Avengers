@@ -10,5 +10,7 @@
 	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/commons-net-3.6.jar"/>
 	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/commons-net-3.6-sources.jar"/>
 	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/commons-net-examples-3.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
