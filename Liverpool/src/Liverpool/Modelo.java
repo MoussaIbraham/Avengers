@@ -76,6 +76,7 @@ public class Modelo {
 	
 			//Otros textos
 			TextoIpFtp="192.168.1.135",
+
 			TextoServerSMTP = "smtp.gmail.com",
 
 			//Ventana correo pop
