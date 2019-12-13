@@ -75,7 +75,7 @@ public class Modelo {
 	
 	
 			//Otros textos
-			TextoIpFtp="192.168.1.135",
+			TextoIpFtp="localhost",
 
 			TextoServerSMTP = "smtp.gmail.com",
 

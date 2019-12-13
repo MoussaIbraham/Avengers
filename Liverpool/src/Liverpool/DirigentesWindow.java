@@ -209,11 +209,27 @@ public class DirigentesWindow extends JFrame {
 		btnBorrarCarpeta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = list.getSelectedIndex();
+				String fichero = list.getSelectedValue().toString();
                 System.out.println("index: " + index);
-                if (index > -1)
-                        lista.removeElementAt(index);
-
-			}
+                if(fichero.substring(0, 1).equals("/")) {
+                	int Seleccion = JOptionPane.showConfirmDialog(null,"¿Desea eliminar la carpeta seleccionada?");
+                	if(Seleccion == JOptionPane.OK_OPTION) {
+                		try {
+                			 if (index > -1)
+                                 lista.removeElementAt(index);
+                			 System.out.println(fichero);
+							cliente.client.removeDirectory(fichero);
+							JOptionPane.showMessageDialog(null, "La carpeta se ha borrado correctamente.");
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                	}
+                } else {
+                	JOptionPane.showMessageDialog(null, "Seleccione una carpeta.");
+                }
+               
+				}
 		});
 		btnBorrarCarpeta.setBounds(509, 92, 134, 23);
 		contentPane.add(btnBorrarCarpeta);

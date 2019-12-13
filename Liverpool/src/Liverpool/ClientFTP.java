@@ -7,16 +7,14 @@ import java.io.IOException;
 import org.apache.commons.net.ftp.*;
 
 public class ClientFTP {
-	
+
 	private static Modelo mimodelo;
 	FTPFile[] files;
 	FTPClient client;
-	
 
+	public ClientFTP(String User, String Pass, Modelo mimodelo) {
+		this.mimodelo = mimodelo;
 
-	public ClientFTP (String User, String Pass, Modelo mimodelo) {
-		this.mimodelo=mimodelo;
-		
 		// Creando nuestro objeto Client
 		client = new FTPClient();
 
@@ -31,29 +29,30 @@ public class ClientFTP {
 			// conectarse)
 			boolean login = client.login(User, Pass);
 			if (login) {
-				System.out.println(mimodelo.getTextoVentanaemergenteLoginExito()); //Cambiar esto por ventana emergente
+				System.out.println(mimodelo.getTextoVentanaemergenteLoginExito()); // Cambiar esto por ventana emergente
 				client.changeWorkingDirectory("/SIGE ODOO");
-				//Obtenemos ficheros y directorios.
+				// Obtenemos ficheros y directorios.
 				files = client.listFiles();
 				client.setFileType(FTP.BINARY_FILE_TYPE);
 
 				String filename = "miarchivo.txt";
 				BufferedInputStream in = new BufferedInputStream(
 						new FileInputStream("C:\\Users\\enano\\OneDrive\\Escritorio\\SIGE ODOO\\" + filename));
-				System.out.println(mimodelo.getTextoVentanaEmergenteGestionSubidaExitosa()); //Cambiar esto por ventana emergente
+				System.out.println(mimodelo.getTextoVentanaEmergenteGestionSubidaExitosa()); // Cambiar esto por ventana
+																								// emergente
 				// Guardando el archivo en el servidor
 				client.storeFile(filename, in);
 				in.close();
 
 			} else {
-				System.out.println(mimodelo.getTextoVentanaemergenteLoginError()); //Cambiar esto por ventana emergente
+				System.out.println(mimodelo.getTextoVentanaemergenteLoginError()); // Cambiar esto por ventana emergente
 			}
 
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
 	}
-	
+
 	public FTPFile[] getFiles() {
 		return files;
 	}
@@ -61,6 +60,7 @@ public class ClientFTP {
 	public void setFiles(FTPFile[] files) {
 		this.files = files;
 	}
+
 	public FTPClient getClient() {
 		return client;
 	}
@@ -69,11 +69,10 @@ public class ClientFTP {
 		this.client = client;
 	}
 
-	
 	public FTPClient Conexion(String User, String Pass, Modelo mimodelo) {
-		
-		this.mimodelo=mimodelo;
-		
+
+		this.mimodelo = mimodelo;
+
 		// Creando nuestro objeto Client
 		FTPClient client = new FTPClient();
 
@@ -88,7 +87,7 @@ public class ClientFTP {
 			// conectarse)
 			boolean login = client.login(User, Pass);
 			if (login) {
-				System.out.println(mimodelo.getTextoVentanaemergenteLoginExito()); //Cambiar esto por ventana emergente
+				System.out.println(mimodelo.getTextoVentanaemergenteLoginExito()); // Cambiar esto por ventana emergente
 				client.changeWorkingDirectory("/SIGE ODOO");
 				FTPFile[] files = client.listFiles();
 				client.setFileType(FTP.BINARY_FILE_TYPE);
@@ -96,13 +95,14 @@ public class ClientFTP {
 				String filename = "miarchivo.txt";
 				BufferedInputStream in = new BufferedInputStream(
 						new FileInputStream("C:\\Users\\enano\\OneDrive\\Escritorio\\SIGE ODOO\\" + filename));
-				System.out.println(mimodelo.getTextoVentanaEmergenteGestionSubidaExitosa()); //Cambiar esto por ventana emergente
+				System.out.println(mimodelo.getTextoVentanaEmergenteGestionSubidaExitosa()); // Cambiar esto por ventana
+																								// emergente
 				// Guardando el archivo en el servidor
 				client.storeFile(filename, in);
 				in.close();
 
 			} else {
-				System.out.println(mimodelo.getTextoVentanaemergenteLoginError()); //Cambiar esto por ventana emergente
+				System.out.println(mimodelo.getTextoVentanaemergenteLoginError()); // Cambiar esto por ventana emergente
 			}
 
 		} catch (IOException ioe) {
