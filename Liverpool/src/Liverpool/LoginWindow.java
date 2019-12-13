@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.security.spec.PSSParameterSpec;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import org.apache.commons.net.ftp.*;
@@ -86,6 +87,10 @@ public class LoginWindow {
 							+ txtUsuario.getText() + "' and pasword like '" + pass + "'"));
 					if (bd.getRs().next()) {
 						JOptionPane.showMessageDialog(null, "Correcto");
+						
+						mimodelo.setAlmacenNombreUsuario(txtUsuario.getText());
+						mimodelo.setAlmacenContraseña(pass);
+						
 						DirigentesWindow dirigentes = new DirigentesWindow(txtUsuario.getText().toString(), pass, mimodelo);						
 						dirigentes.setVisible(true);
 						window.frame.dispose();

@@ -13,6 +13,8 @@ public class Modelo {
 			TextoBotonCancelar="Cancel",
 			TextoVentanaemergenteLoginExito="Connected",
 			TextoVentanaemergenteLoginError="Error, please Introduce a correct user or password.",
+			AlmacenNombreUsuario="",
+			AlmacenContraseña="",
 			
 			//Errores de la base de datos
 			TextoErrorBd1="Error al encontrar la Base de Datos",
@@ -80,6 +82,22 @@ public class Modelo {
 	
 	
 	
+	public String getAlmacenNombreUsuario() {
+		return AlmacenNombreUsuario;
+	}
+
+	public void setAlmacenNombreUsuario(String almacenNombreUsuario) {
+		AlmacenNombreUsuario = almacenNombreUsuario;
+	}
+
+	public String getAlmacenContraseña() {
+		return AlmacenContraseña;
+	}
+
+	public void setAlmacenContraseña(String almacenContraseña) {
+		AlmacenContraseña = almacenContraseña;
+	}
+
 	public String getTextoErrorBd1() {
 		return TextoErrorBd1;
 	}
