@@ -75,13 +75,106 @@ public class Modelo {
 	
 	
 			//Otros textos
-			TextoIpFtp="192.168.1.135";
+			TextoIpFtp="192.168.1.135",
 
+			//Ventana correo pop
+			TextoPOPBotonAbrirCorreo="Open Mail",
+			TextoPOPBotonEscribirCorreo="Send Mail",
+			TextoPOPBotonCerrarCorreo="Close Mail",
+	
+			//Ventana correo SMTP
+			TextoSMTPLabelDestinatario="To",
+			TextoSMTPLabelAyudaDestinatario="(Add '/' to separate mails if you want to send it to more than one person)",
+			TextoSMTPLabelAsunto="Subject",
+			TextoSMTPLabelCuerpo="Text",
+			TextoSMTPLabelAñadirArchivo="Attach files",
+			TextoSMTPBotonEnviar="Send Mail",
+			TextoSMTPBotonCancelar="Cancel";
+			
 	
 	
 	
 	
-	
+	public String getTextoSMTPLabelAyudaDestinatario() {
+		return TextoSMTPLabelAyudaDestinatario;
+	}
+
+	public void setTextoSMTPLabelAyudaDestinatario(String textoSMTPLabelAyudaDestinatario) {
+		TextoSMTPLabelAyudaDestinatario = textoSMTPLabelAyudaDestinatario;
+	}
+
+	public String getTextoSMTPBotonCancelar() {
+		return TextoSMTPBotonCancelar;
+	}
+
+	public void setTextoSMTPBotonCancelar(String textoSMTPBotonCancelar) {
+		TextoSMTPBotonCancelar = textoSMTPBotonCancelar;
+	}
+
+	public String getTextoPOPBotonAbrirCorreo() {
+		return TextoPOPBotonAbrirCorreo;
+	}
+
+	public void setTextoPOPBotonAbrirCorreo(String textoPOPBotonAbrirCorreo) {
+		TextoPOPBotonAbrirCorreo = textoPOPBotonAbrirCorreo;
+	}
+
+	public String getTextoPOPBotonEscribirCorreo() {
+		return TextoPOPBotonEscribirCorreo;
+	}
+
+	public void setTextoPOPBotonEscribirCorreo(String textoPOPBotonEscribirCorreo) {
+		TextoPOPBotonEscribirCorreo = textoPOPBotonEscribirCorreo;
+	}
+
+	public String getTextoPOPBotonCerrarCorreo() {
+		return TextoPOPBotonCerrarCorreo;
+	}
+
+	public void setTextoPOPBotonCerrarCorreo(String textoPOPBotonCerrarCorreo) {
+		TextoPOPBotonCerrarCorreo = textoPOPBotonCerrarCorreo;
+	}
+
+	public String getTextoSMTPLabelDestinatario() {
+		return TextoSMTPLabelDestinatario;
+	}
+
+	public void setTextoSMTPLabelDestinatario(String textoSMTPLabelDestinatario) {
+		TextoSMTPLabelDestinatario = textoSMTPLabelDestinatario;
+	}
+
+	public String getTextoSMTPLabelAsunto() {
+		return TextoSMTPLabelAsunto;
+	}
+
+	public void setTextoSMTPLabelAsunto(String textoSMTPLabelAsunto) {
+		TextoSMTPLabelAsunto = textoSMTPLabelAsunto;
+	}
+
+	public String getTextoSMTPLabelCuerpo() {
+		return TextoSMTPLabelCuerpo;
+	}
+
+	public void setTextoSMTPLabelCuerpo(String textoSMTPLabelCuerpo) {
+		TextoSMTPLabelCuerpo = textoSMTPLabelCuerpo;
+	}
+
+	public String getTextoSMTPLabelAñadirArchivo() {
+		return TextoSMTPLabelAñadirArchivo;
+	}
+
+	public void setTextoSMTPLabelAñadirArchivo(String textoSMTPLabelAñadirArchivo) {
+		TextoSMTPLabelAñadirArchivo = textoSMTPLabelAñadirArchivo;
+	}
+
+	public String getTextoSMTPBotonEnviar() {
+		return TextoSMTPBotonEnviar;
+	}
+
+	public void setTextoSMTPBotonEnviar(String textoSMTPBotonEnviar) {
+		TextoSMTPBotonEnviar = textoSMTPBotonEnviar;
+	}
+
 	public String getAlmacenNombreUsuario() {
 		return AlmacenNombreUsuario;
 	}
