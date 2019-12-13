@@ -76,6 +76,7 @@ public class Modelo {
 	
 			//Otros textos
 			TextoIpFtp="192.168.1.135",
+			TextoServerSMTP = "smtp.gmail.com",
 
 			//Ventana correo pop
 			TextoPOPBotonAbrirCorreo="Open Mail",
@@ -87,7 +88,7 @@ public class Modelo {
 			TextoSMTPLabelAyudaDestinatario="(Add '/' to separate mails if you want to send it to more than one person)",
 			TextoSMTPLabelAsunto="Subject",
 			TextoSMTPLabelCuerpo="Text",
-			TextoSMTPLabelAñadirArchivo="Attach files",
+			TextoSMTPButtonAñadirArchivo="Attach files",
 			TextoSMTPBotonEnviar="Send Mail",
 			TextoSMTPBotonCancelar="Cancel";
 			
@@ -160,11 +161,11 @@ public class Modelo {
 	}
 
 	public String getTextoSMTPLabelAñadirArchivo() {
-		return TextoSMTPLabelAñadirArchivo;
+		return TextoSMTPButtonAñadirArchivo;
 	}
 
 	public void setTextoSMTPLabelAñadirArchivo(String textoSMTPLabelAñadirArchivo) {
-		TextoSMTPLabelAñadirArchivo = textoSMTPLabelAñadirArchivo;
+		TextoSMTPButtonAñadirArchivo = textoSMTPLabelAñadirArchivo;
 	}
 
 	public String getTextoSMTPBotonEnviar() {
@@ -517,5 +518,23 @@ public class Modelo {
 
 	public void setTextoIpFtp(String textoIpFtp) {
 		TextoIpFtp = textoIpFtp;
+	}
+
+	public String getTextoServerSMTP() {
+		return TextoServerSMTP;
+	}
+
+	public void setTextoServerSMTP(String textoServerSMTP) {
+		TextoServerSMTP = textoServerSMTP;
+	}
+
+	public String getTextoSMTPButtonAñadirArchivo() {
+		return TextoSMTPButtonAñadirArchivo;
+	}
+
+	public void setTextoSMTPButtonAñadirArchivo(String textoSMTPButtonAñadirArchivo) {
+		TextoSMTPButtonAñadirArchivo = textoSMTPButtonAñadirArchivo;
 	}			
+	
+	
 }

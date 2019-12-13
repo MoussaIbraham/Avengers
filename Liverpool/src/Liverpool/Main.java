@@ -9,6 +9,7 @@ public class Main {
 		LoginWindow window = new LoginWindow(mimodelo);
 		window.main(args);
 		System.out.println("hllo");
+		new ClientePOP3();
 	}
 	
 }
