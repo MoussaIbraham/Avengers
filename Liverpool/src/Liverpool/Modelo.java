@@ -86,7 +86,7 @@ public class Modelo {
 	
 			//Ventana correo SMTP
 			TextoSMTPLabelDestinatario="To",
-			TextoSMTPLabelAyudaDestinatario="(Add '/' to separate mails if you want to send it to more than one person)",
+			TextoSMTPLabelAyudaDestinatario="<html>(Add '/' to separate mails if you<br>want to send it to more than one person)</html>",
 			TextoSMTPLabelAsunto="Subject",
 			TextoSMTPLabelCuerpo="Text",
 			TextoSMTPButtonAñadirArchivo="Attach files",

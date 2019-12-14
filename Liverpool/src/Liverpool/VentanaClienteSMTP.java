@@ -21,6 +21,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
@@ -40,6 +41,9 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
+import javax.swing.JScrollPane;
+import javax.swing.JList;
 
 public class VentanaClienteSMTP extends JFrame {
 
@@ -50,13 +54,16 @@ public class VentanaClienteSMTP extends JFrame {
 	Modelo modelo = new Modelo();
 	ArrayList<String> filename = new ArrayList<String>();
 	ArrayList<String> filepath = new ArrayList<String>();
+	Transport t;
+	DefaultListModel modelList = new DefaultListModel();
 	/*
 	 * Datos del usuario y conexión
 	 */
-	String username = "dmatasalazar.sanjose@alumnado.fundacionloyola.net";//modelo.getAlmacenNombreUsuario();
-	String pasword = "21485902"; //modelo.getAlmacenContraseña();
+	String username = "dmatasalazar.sanjose@alumnado.fundacionloyola.net";// modelo.getAlmacenNombreUsuario();
+	String pasword = "21485902"; // modelo.getAlmacenContraseña();
 	String server = modelo.getTextoServerSMTP();
 	int puerto = 25;
+
 	/**
 	 * Launch the application.
 	 */
@@ -72,57 +79,71 @@ public class VentanaClienteSMTP extends JFrame {
 			}
 		});
 	}
-	
+
 	public boolean enviarCorreo() {
-		try { 
+		String [] destinatarios;		
 		Properties p = System.getProperties();
 		p.put("mail.smtp.host", "smtp.gmail.com");
-	    p.setProperty("mail.smtp.starttls.enable", "true"); 
-	    p.setProperty("mail.smtp.port", "587"); 
-	    p.setProperty("mail.smtp.user", username);
-	    p.setProperty("mail.smtp.auth", "true");
-	    
-
-	    Session session = Session.getInstance(p);
-	    session.setDebug(true);
-	    /*
-	     * Texto
-	     */
-	    BodyPart text = new MimeBodyPart();
-	    text.setText(bodyMenssage.getText());
-	    MimeMultipart m = new MimeMultipart();
-	    m.addBodyPart(text);// Add text  
-	    MimeMessage message = new MimeMessage(session);
-	    message.setFrom(new InternetAddress(username));
-	    message.addRecipient(Message.RecipientType.TO, new InternetAddress(addressee.getText()));
-	    message.setSubject(subject.getText());  
-	    /*
-	     * Adjuntos
-	     */
-	    if(filepath.size()!=0) {
-	    	for(int i=0;i<filepath.size();i++) {
-	    	BodyPart adjuntfile = new MimeBodyPart();
-		    adjuntfile.setDataHandler(new DataHandler(new FileDataSource(filepath.get(i))));
-		    adjuntfile.setFileName(filename.get(i));
-		    m.addBodyPart(adjuntfile);
-	    	}
-	    }
-	    // Add Text and File
-	    message.setContent(m);
-	    /*
-	     * 
-	     */
-	    Transport t = session.getTransport("smtp");
-	    t.connect(username, pasword);
-	    t.send(message,message.getRecipients(Message.RecipientType.TO));
-	    t.close();
-	        return true;
-	    }
-	    catch (MessagingException me) {
-	        return false;
-	    }
+		p.setProperty("mail.smtp.starttls.enable", "true");
+		p.setProperty("mail.smtp.port", "587");
+		p.setProperty("mail.smtp.auth", "true");
+		p.setProperty("mail.smtp.user", username);
+		p.setProperty("mail.smtp.clave", pasword);
+		
+		Session session = Session.getInstance(p);
+		session.setDebug(true);
+		try {
+			MimeMultipart m = new MimeMultipart();
+			BodyPart text = new MimeBodyPart();
+			MimeMessage message = new MimeMessage(session);
+			text.setText(bodyMenssage.getText());
+			m.addBodyPart(text);// Add text
+			t = session.getTransport("smtp");
+			if(addressee.getText().contains("/")) {
+				destinatarios = addressee.getText().split("/");
+				for(int i=0;i<destinatarios.length;i++) {
+					message.setFrom(new InternetAddress(username));
+					message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatarios[i]));
+					message.setSubject(subject.getText());	
+				}
+			}else {
+			message.setFrom(new InternetAddress(username));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(addressee.getText()));
+			message.setSubject(subject.getText());
+			}
+			/*
+			 * Adjuntos
+			 */
+			if (filepath.size() != 0) {
+				for (int i = 0; i < filepath.size(); i++) {
+					BodyPart adjuntfile = new MimeBodyPart();
+					adjuntfile.setDataHandler(new DataHandler(new FileDataSource(filepath.get(i))));
+					adjuntfile.setFileName(filename.get(i));
+					m.addBodyPart(adjuntfile);
+					System.out.println(filepath.get(i));
+					System.out.println(filename.get(i));
+					
+				}
+			}
+			// Add Text and File
+			message.setContent(m);
+			/*
+			 * Data Transport
+			 */
+			t.connect(modelo.getTextoServerSMTP(),username, pasword);
+			t.sendMessage(message, message.getAllRecipients());
+			return true;
+		} catch (MessagingException me) {
+			return false;
+		} finally {
+			try {
+				t.close();
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
-
 
 	/**
 	 * Create the frame.
@@ -130,61 +151,73 @@ public class VentanaClienteSMTP extends JFrame {
 	public VentanaClienteSMTP() {
 		setTitle("Send Email");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 592, 377);
 		assunt = new JPanel();
 		assunt.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(assunt);
 		assunt.setLayout(null);
 
-		JButton buttonSend = new JButton("Send\r\n");
+		JButton buttonSend = new JButton("Send");
 		buttonSend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (addressee.getText().equals("") || subject.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "RELLENE LOS CAMPOS");
+					JOptionPane.showMessageDialog(null, "WRITE IN THE FIELDS");
 				} else {
 					Boolean correo = enviarCorreo();
-					if(correo = true) {
-						JOptionPane.showMessageDialog(null, "EMAIL CORRECT");
-					}else {
+					if (correo = true) {
+						JOptionPane.showMessageDialog(null, "EMAIL SENT CORRECTLY");
+					} else {
 						JOptionPane.showMessageDialog(null, "FAIL TO SEND EMAIL");
 					}
 				}
 			}
 		});
-		buttonSend.setBounds(315, 232, 85, 21);
+		buttonSend.setBounds(424, 298, 85, 21);
 		assunt.add(buttonSend);
 
 		addressee = new JTextField();
-		addressee.setBounds(81, 29, 236, 19);
+		addressee.setBounds(81, 55, 236, 19);
 		assunt.add(addressee);
 		addressee.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel(modelo.getTextoSMTPLabelDestinatario());
-		lblNewLabel.setBounds(10, 32, 61, 13);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel.setBounds(10, 57, 61, 13);
 		assunt.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel(modelo.getTextoSMTPLabelAsunto());
-		lblNewLabel_1.setBounds(10, 61, 46, 13);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel_1.setBounds(10, 101, 46, 13);
 		assunt.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel(modelo.getTextoSMTPLabelCuerpo());
-		lblNewLabel_2.setBounds(10, 102, 46, 13);
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel_2.setBounds(10, 145, 46, 13);
 		assunt.add(lblNewLabel_2);
 
 		subject = new JTextField();
-		subject.setBounds(81, 58, 236, 19);
+		subject.setBounds(81, 99, 236, 19);
 		assunt.add(subject);
 		subject.setColumns(10);
 
 		bodyMenssage = new JTextField();
-		bodyMenssage.setBounds(81, 99, 236, 108);
+		bodyMenssage.setBounds(81, 141, 241, 135);
 		assunt.add(bodyMenssage);
 		bodyMenssage.setColumns(10);
 
 		JLabel advise = new JLabel(modelo.getTextoSMTPLabelAyudaDestinatario());
-		advise.setBounds(354, 32, 46, 13);
+		advise.setBounds(368, 10, 200, 108);
 		assunt.add(advise);
 
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(356, 144, 200, 135);
+		assunt.add(scrollPane);
+
+		JList listAdjunt = new JList();
+		listAdjunt.setModel(modelList);
+		scrollPane.setViewportView(listAdjunt);
+		
 		JButton btnNewButton = new JButton(modelo.getTextoSMTPLabelAñadirArchivo());
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -193,26 +226,29 @@ public class VentanaClienteSMTP extends JFrame {
 				f = new JFileChooser();
 				f.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				f.setDialogTitle("Select to file where you Up");
-	
-				int returnVal = f.showDialog(f, "UP");
+
+				int returnVal = f.showDialog(f, "SELECT");
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					file = f.getSelectedFile();
 					String archivo = file.getAbsolutePath();
 					String nombreArchivo = file.getName();
 					filename.add(nombreArchivo);
-					filepath.add(nombreArchivo);
-			}
+					filepath.add(archivo);
+					modelList.addElement(nombreArchivo);
+				}
 			}
 		});
-		btnNewButton.setBounds(157, 232, 85, 21);
+		btnNewButton.setBounds(228, 298, 85, 21);
 		assunt.add(btnNewButton);
 
 		JButton cancel = new JButton(modelo.getTextoSMTPBotonCancelar());
 		cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
-		cancel.setBounds(10, 232, 85, 21);
+		cancel.setBounds(59, 298, 85, 21);
 		assunt.add(cancel);
+
 	}
 }
