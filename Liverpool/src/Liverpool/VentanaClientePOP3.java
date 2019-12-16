@@ -14,6 +14,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Store;
+import javax.mail.internet.MimeMessage;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -148,7 +149,7 @@ public class VentanaClientePOP3 extends JFrame {
 	            for(int i=0;i<mensajes.length;i++) {
 	            //ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom().toString(),mensajes[i].getSubject().toString(),mensajes[i].getContent().toString());
 	            //correosrecibidos.add(correo);
-	            	recibidosarray.add("Recibido de: "+mensajes[i].getFrom().toString() + " Asunto: "+mensajes[i].getSubject().toString());
+	            	recibidosarray.add("Recibido de: "+mensajes[i].getFrom()[0] + " Asunto: "+mensajes[i].getSubject().toString());
 	            }
 	            modelocorreos.addAll(recibidosarray);		
 	            //modelocorreos.addAll(correosrecibidos);
