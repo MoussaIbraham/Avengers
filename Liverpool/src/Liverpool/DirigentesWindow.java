@@ -54,22 +54,30 @@ public class DirigentesWindow extends JFrame {
 	 * 
 	 * @throws SQLException
 	 */
-	public DirigentesWindow(String string, String pass, Modelo mimodelo) throws SQLException {
+	public DirigentesWindow(String Usuario, String pass, Modelo mimodelo) throws SQLException {
 		this.mimodelo = mimodelo;
-		ClientFTP cliente = new ClientFTP(string, pass, mimodelo);
+		ClientFTP cliente = new ClientFTP(Usuario, pass, mimodelo);
+		
 		JButton btnSalir = new JButton(mimodelo.getTextoBotonSalir());
+		btnSalir.setForeground(new Color(255, 0, 0));
 		JButton btnSubirArchivo = new JButton(mimodelo.getTextoBotonsubida());
+		btnSubirArchivo.setBackground(new Color(102, 205, 170));
 		JButton btnDescargarArchivo = new JButton(mimodelo.getTextoBotonBajada());
+		btnDescargarArchivo.setForeground(new Color(255, 255, 255));
+		btnDescargarArchivo.setBackground(new Color(46, 139, 87));
 		JButton btnCrearCarpeta = new JButton(mimodelo.getTextoBotonCrear());
+		btnCrearCarpeta.setBackground(new Color(30, 144, 255));
 		JButton btnBorrarCarpeta = new JButton(mimodelo.getTextoBotonBorrar());
+		btnBorrarCarpeta.setBackground(new Color(100, 149, 237));
 		JButton btnRenombrar = new JButton(mimodelo.getTextoBotonRenombrar());
+		btnRenombrar.setBackground(new Color(230, 230, 250));
 
 		ConexionConBD bd2 = new ConexionConBD(mimodelo);
-		System.out.println("ande va");
+
 		try {
 			bd2.setRs(bd2.sentencia.executeQuery(
 					"SELECT permissions.UP, permissions.DOWN, permissions.CREATEP, permissions.REMOVEP, permissions.RENAMEP FROM permissions LEFT JOIN users ON users.TYPE = permissions.TYPE where users.NICKNAME = '"
-							+ string + "' and users.PASWORD = '" + pass + "'"));
+							+ Usuario + "' and users.PASWORD = '" + pass + "'"));
 			if (bd2.getRs().next()) {
 				System.out.println(bd2.getRs().getInt(1));
 				System.out.println(bd2.getRs().getInt(4));
@@ -94,15 +102,24 @@ public class DirigentesWindow extends JFrame {
 			e3.printStackTrace();
 		}
 
-		System.out.println("loco");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 444);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
-		User = string;
+		
+		JLabel lblUsuario = new JLabel();
+		lblUsuario.setBounds(516, 30, 139, 14);
+		contentPane.add(lblUsuario);
+		
+		JLabel lblServidorFtp = new JLabel("Servidor FTP:");
+		lblServidorFtp.setBounds(27, 11, 220, 14);
+		contentPane.add(lblServidorFtp);
+		lblUsuario.setText("Usuario: " + Usuario);
+		lblServidorFtp.setText("Servidor FTP: " + mimodelo.getTextoIpFtp());
+		
+		User = Usuario;
 		this.pass = pass;
 
 		list = new JList();
@@ -110,7 +127,7 @@ public class DirigentesWindow extends JFrame {
 
 		JScrollPane barraDesplazamiento = new JScrollPane(list);
 		barraDesplazamiento.setPreferredSize(new Dimension(335, 300));
-		barraDesplazamiento.setBounds(new Rectangle(5, 65, 335, 300));
+		barraDesplazamiento.setBounds(new Rectangle(27, 81, 335, 300));
 		barraDesplazamiento.setViewportView(list);
 		list.setLayoutOrientation(JList.VERTICAL);
 		contentPane.add(barraDesplazamiento);
@@ -129,7 +146,7 @@ public class DirigentesWindow extends JFrame {
 				LoginWindow.main(args);
 			}
 		});
-		btnSalir.setBounds(461, 317, 89, 23);
+		btnSalir.setBounds(464, 337, 129, 41);
 		contentPane.add(btnSalir);
 
 		list.addMouseListener(new MouseAdapter() {
@@ -235,7 +252,7 @@ public class DirigentesWindow extends JFrame {
 
 			}
 		});
-		btnSubirArchivo.setBounds(376, 45, 111, 23);
+		btnSubirArchivo.setBounds(386, 81, 129, 41);
 		contentPane.add(btnSubirArchivo);
 
 		btnDescargarArchivo.addActionListener(new ActionListener() {
@@ -269,7 +286,7 @@ public class DirigentesWindow extends JFrame {
 
 			}
 		});
-		btnDescargarArchivo.setBounds(509, 45, 134, 23);
+		btnDescargarArchivo.setBounds(525, 81, 130, 41);
 		contentPane.add(btnDescargarArchivo);
 
 		btnCrearCarpeta.addActionListener(new ActionListener() {
@@ -277,20 +294,16 @@ public class DirigentesWindow extends JFrame {
 				String nombreCarpeta = JOptionPane.showInputDialog(null, mimodelo.getTextoGestionAyudaCrear(),
 						mimodelo.getTextoGestionAyudaCrear2());
 
-				try {
-					cliente.client.changeWorkingDirectory(direcSelec);
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
 
 				if (!(nombreCarpeta == null)) {
 					String direcCarpeta = direcSelec;
 					if (!direcSelec.equals("/"))
-					//	direcCarpeta = direcCarpeta + "/";
+						direcCarpeta = direcCarpeta + "/";
 					direcCarpeta += nombreCarpeta.trim();
 
 					try {
-						if (cliente.client.makeDirectory(nombreCarpeta.trim())) {
+						if (cliente.client.makeDirectory(direcCarpeta)) {
+							cliente.client.changeWorkingDirectory(direcSelec);
 							String m = nombreCarpeta.trim()
 									+ mimodelo.getTextoVentanaEmergenteGestionCrearCarpetaExito();
 							JOptionPane.showMessageDialog(null, m);
@@ -301,17 +314,15 @@ public class DirigentesWindow extends JFrame {
 							LlenarLista(ff2, direcSelec);
 						}
 					} catch (HeadlessException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 
 				}
 			}
 		});
-		btnCrearCarpeta.setBounds(376, 92, 111, 23);
+		btnCrearCarpeta.setBounds(386, 148, 129, 41);
 		contentPane.add(btnCrearCarpeta);
 
 		btnBorrarCarpeta.addActionListener(new ActionListener() {
@@ -319,38 +330,39 @@ public class DirigentesWindow extends JFrame {
 				if (list.isSelectionEmpty()) {
 					JOptionPane.showMessageDialog(null, "Seleccione la carpeta que quiera borrar.");
 				} else {
-					try {
-						cliente.client.changeWorkingDirectory(direcSelec);
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					}
 					int index = list.getSelectedIndex();
 					String fichero = list.getSelectedValue().toString();
-					if (fichero.substring(0, 1).equals("/")) {
-						int Seleccion = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la carpeta seleccionada?");
-						if (Seleccion == JOptionPane.OK_OPTION) {
-							try {
-								if (index > -1)
-									if (cliente.client.removeDirectory(fichero)) {
-										JOptionPane.showMessageDialog(null, "La carpeta se ha borrado correctamente.");
-										lista.removeElementAt(index);
-									} else {
-										JOptionPane.showMessageDialog(null,
-												"Para poder borrar la carpeta, primero tiene que estar vacia.");
-									}
+					if(!(fichero == null)){
+						String directorio = direcSelec;
+						if(!direcSelec.equals("/")) directorio = directorio + "/";
+						directorio += fichero.trim();
+						if (fichero.substring(0, 1).equals("/")) {
+							int Seleccion = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la carpeta seleccionada?");
+							if (Seleccion == JOptionPane.OK_OPTION) {
+								try {
+									if (index > -1)
+										if (cliente.client.removeDirectory(fichero.substring(1))) {
+											cliente.client.changeWorkingDirectory(direcSelec);
+											JOptionPane.showMessageDialog(null, "La carpeta se ha borrado correctamente.");
+											lista.removeElementAt(index);
+										} else {
+											JOptionPane.showMessageDialog(null,
+													"Para poder borrar la carpeta, primero tiene que estar vacia.");
+										}
 
-							} catch (IOException e1) {
-								e1.printStackTrace();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
 							}
+						} else {
+							JOptionPane.showMessageDialog(null, "Seleccione una carpeta.");
 						}
-					} else {
-						JOptionPane.showMessageDialog(null, "Seleccione una carpeta.");
-					}
+					}				
 				}
 
 			}
 		});
-		btnBorrarCarpeta.setBounds(509, 92, 134, 23);
+		btnBorrarCarpeta.setBounds(526, 148, 129, 41);
 		contentPane.add(btnBorrarCarpeta);
 
 		btnRenombrar.addActionListener(new ActionListener() {
@@ -381,7 +393,7 @@ public class DirigentesWindow extends JFrame {
 
 			}
 		});
-		btnRenombrar.setBounds(461, 239, 89, 23);
+		btnRenombrar.setBounds(464, 264, 129, 41);
 		contentPane.add(btnRenombrar);
 
 		JButton btnEliminarArchivo = new JButton(mimodelo.getTextoBotonBorrar2());
@@ -412,8 +424,10 @@ public class DirigentesWindow extends JFrame {
 
 			}
 		});
-		btnEliminarArchivo.setBounds(441, 155, 124, 23);
+		btnEliminarArchivo.setBounds(464, 200, 129, 41);
 		contentPane.add(btnEliminarArchivo);
+		
+	
 	}
 
 	public static void LlenarLista(FTPFile[] files, String direc2) throws IOException {
