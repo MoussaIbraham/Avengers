@@ -23,6 +23,7 @@ public class VentanaMenu extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					mimodelo = new  Modelo();
 					VentanaMenu frame = new VentanaMenu(mimodelo);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -48,7 +49,7 @@ public class VentanaMenu extends JFrame {
 		btnAccederAArchivos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//DirigentesWindow Gestion = new DirigentesWindow(string, pass, mimodelo);
+				//DirigentesWindow Gestion = new DirigentesWindow(mimodelo);
 				//Gestion.setVisible(True);
 
 				
@@ -61,8 +62,8 @@ public class VentanaMenu extends JFrame {
 		btnAccederAlCorreo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//VentanaClientePOP3 correo = new VentanaClientePOP3(mimodelo);
-				//correo.SetVisible(True);
+				VentanaLoginCorreo correo = new VentanaLoginCorreo(mimodelo);
+				correo.setVisible(true);
 				
 			}
 		});
@@ -72,7 +73,7 @@ public class VentanaMenu extends JFrame {
 		JButton btnSalir = new JButton(mimodelo.getTextoBotonSalir());
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				contentPane.setVisible(false);
+				System.exit(0);
 			}
 		});
 		btnSalir.setBounds(61, 138, 142, 39);

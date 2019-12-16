@@ -79,6 +79,19 @@ public class Modelo {
 
 			TextoServerSMTP = "smtp.gmail.com",
 
+			//Ventana Logincorreo
+			LoginCorreoTextoLabeluser="Email: ",
+			LoginCorreoTextoLabelpassword="Password: ",
+			LoginCorreoTextoBotonLogin="Login",
+			LoginCorreoTextoBotonCancel="Cancel",
+			LoginCorreoCajaCorreo="",
+			LoginCorreoCajacontraseña="",
+			
+			//Ventana LeerCorreo
+			VerCorreoTextoLabelde="From:",
+			VerCorreoTextoLabelAsunto="Subject:",
+			
+			
 			//Ventana correo pop
 			TextoPOPBotonAbrirCorreo="Open Mail",
 			TextoPOPBotonEscribirCorreo="Send Mail",
@@ -97,6 +110,70 @@ public class Modelo {
 	
 	
 	
+	public String getVerCorreoTextoLabelde() {
+		return VerCorreoTextoLabelde;
+	}
+
+	public void setVerCorreoTextoLabelde(String verCorreoTextoLabelde) {
+		VerCorreoTextoLabelde = verCorreoTextoLabelde;
+	}
+
+	public String getVerCorreoTextoLabelAsunto() {
+		return VerCorreoTextoLabelAsunto;
+	}
+
+	public void setVerCorreoTextoLabelAsunto(String verCorreoTextoLabelAsunto) {
+		VerCorreoTextoLabelAsunto = verCorreoTextoLabelAsunto;
+	}
+
+	public String getLoginCorreoTextoLabeluser() {
+		return LoginCorreoTextoLabeluser;
+	}
+
+	public void setLoginCorreoTextoLabeluser(String loginCorreoTextoLabeluser) {
+		LoginCorreoTextoLabeluser = loginCorreoTextoLabeluser;
+	}
+
+	public String getLoginCorreoTextoLabelpassword() {
+		return LoginCorreoTextoLabelpassword;
+	}
+
+	public void setLoginCorreoTextoLabelpassword(String loginCorreoTextoLabelpassword) {
+		LoginCorreoTextoLabelpassword = loginCorreoTextoLabelpassword;
+	}
+
+	public String getLoginCorreoTextoBotonLogin() {
+		return LoginCorreoTextoBotonLogin;
+	}
+
+	public void setLoginCorreoTextoBotonLogin(String loginCorreoTextoBotonLogin) {
+		LoginCorreoTextoBotonLogin = loginCorreoTextoBotonLogin;
+	}
+
+	public String getLoginCorreoTextoBotonCancel() {
+		return LoginCorreoTextoBotonCancel;
+	}
+
+	public void setLoginCorreoTextoBotonCancel(String loginCorreoTextoBotonCancel) {
+		LoginCorreoTextoBotonCancel = loginCorreoTextoBotonCancel;
+	}
+
+	public String getLoginCorreoCajaCorreo() {
+		return LoginCorreoCajaCorreo;
+	}
+
+	public void setLoginCorreoCajaCorreo(String loginCorreoCajaCorreo) {
+		LoginCorreoCajaCorreo = loginCorreoCajaCorreo;
+	}
+
+	public String getLoginCorreoCajacontraseña() {
+		return LoginCorreoCajacontraseña;
+	}
+
+	public void setLoginCorreoCajacontraseña(String loginCorreoCajacontraseña) {
+		LoginCorreoCajacontraseña = loginCorreoCajacontraseña;
+	}
+
 	public String getTextoSMTPLabelAyudaDestinatario() {
 		return TextoSMTPLabelAyudaDestinatario;
 	}

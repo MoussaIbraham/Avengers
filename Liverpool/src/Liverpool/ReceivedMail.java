@@ -4,7 +4,7 @@ public class ReceivedMail {
 	
 	public ReceivedMail() {}
 	
-	public ReceivedMail(String bodyMail, String subject, String transmitter, String receivedDate) {
+	public ReceivedMail(String transmitter, String subject, String bodyMail, String receivedDate) {
 		super();
 		this.bodyMail = bodyMail;
 		this.subject = subject;
