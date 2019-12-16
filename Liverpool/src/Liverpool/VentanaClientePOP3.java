@@ -23,6 +23,7 @@ public class VentanaClientePOP3 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					mimodelo = new Modelo();
 					VentanaClientePOP3 frame = new VentanaClientePOP3(mimodelo);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -47,12 +48,7 @@ public class VentanaClientePOP3 extends JFrame {
 		
 		JButton btnAbrirCorreo = new JButton(mimodelo.getTextoPOPBotonAbrirCorreo());
 		btnAbrirCorreo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				
-				
-				
+			public void actionPerformed(ActionEvent e) {	
 				
 			}
 		});

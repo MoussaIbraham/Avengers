@@ -59,8 +59,8 @@ public class VentanaClienteSMTP extends JFrame {
 	/*
 	 * Datos del usuario y conexión
 	 */
-	String username = "dmatasalazar.sanjose@alumnado.fundacionloyola.net";// modelo.getAlmacenNombreUsuario();
-	String pasword = "21485902"; // modelo.getAlmacenContraseña();
+	String username = modelo.getAlmacenNombreUsuario();
+	String pasword =  modelo.getAlmacenContraseña();
 	String server = modelo.getTextoServerSMTP();
 	int puerto = 25;
 
@@ -112,7 +112,7 @@ public class VentanaClienteSMTP extends JFrame {
 			message.setSubject(subject.getText());
 			}
 			/*
-			 * Adjuntos
+			 * Attached Files
 			 */
 			if (filepath.size() != 0) {
 				for (int i = 0; i < filepath.size(); i++) {
