@@ -96,6 +96,7 @@ public class Modelo {
 			TextoPOPBotonAbrirCorreo="Open Mail",
 			TextoPOPBotonEscribirCorreo="Send Mail",
 			TextoPOPBotonCerrarCorreo="Close Mail",
+			TextoPOPBotonActualizarCorreo="Refresh",
 	
 			//Ventana correo SMTP
 			TextoSMTPLabelDestinatario="To",
@@ -110,6 +111,14 @@ public class Modelo {
 	
 	
 	
+	public String getTextoPOPBotonActualizarCorreo() {
+		return TextoPOPBotonActualizarCorreo;
+	}
+
+	public void setTextoPOPBotonActualizarCorreo(String textoPOPBotonActualizarCorreo) {
+		TextoPOPBotonActualizarCorreo = textoPOPBotonActualizarCorreo;
+	}
+
 	public String getVerCorreoTextoLabelde() {
 		return VerCorreoTextoLabelde;
 	}

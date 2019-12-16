@@ -105,8 +105,22 @@ public class VentanaClientePOP3 extends JFrame {
 				dispose();
 			}
 		});
-		btnCerrarCorreo.setBounds(568, 113, 108, 35);
+		btnCerrarCorreo.setBounds(568, 156, 108, 35);
 		contentPane.add(btnCerrarCorreo);
+		
+		JButton btnActualizar = new JButton(mimodelo.getTextoPOPBotonActualizarCorreo());
+		btnActualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					
+				try {
+					receiveEmail();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnActualizar.setBounds(568, 110, 108, 35);
+		contentPane.add(btnActualizar);
 		
 		JPanel lista = new JPanel();
 		lista.setBackground(Color.WHITE);
@@ -118,10 +132,7 @@ public class VentanaClientePOP3 extends JFrame {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		bandeja = new JList();
-		bandeja.setModel(modelocorreos);
 		lista.add(bandeja);
-		
 	}
 	
 
@@ -152,11 +163,15 @@ public class VentanaClientePOP3 extends JFrame {
 	            
 	            for(int i=0;i<mensajes.length;i++) {
 	           
+	            	ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom()[0].toString(),mensajes[i].getSubject().toString(),mensajes[i].getContent().toString());
+		            textoscorreos.add(correo);
+		            
 	            	recibidosarray.add("Recibido de: "+mensajes[i].getFrom()[0] + " Asunto: "+mensajes[i].getSubject().toString());
-	            	 ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom()[0].toString(),mensajes[i].getSubject().toString(),mensajes[i].getContent().toString());
-	            	textoscorreos.add(correo);
+	            	
 	            }
-	            modelocorreos.addAll(recibidosarray);		
+	            modelocorreos.addAll(recibidosarray);	
+	    		bandeja = new JList();
+	    		bandeja.setModel(modelocorreos);
 	            
 	        }catch(javax.mail.NoSuchProviderException e) {	
 	        } catch (MessagingException e) {

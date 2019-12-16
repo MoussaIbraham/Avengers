@@ -42,8 +42,8 @@ public class VentanaVerCorreo extends JFrame {
 		this.mimodelo=mimodelo;
 		this.textoscorreos=textoscorreos;
 		this.posicion=posicion;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 450, 297);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -77,7 +77,10 @@ public class VentanaVerCorreo extends JFrame {
 	
 	public void vertexto() {
 		
-		de.setText(textoscorreos.get(posicion).getTransmitter());
+		
+		int iend = textoscorreos.get(posicion).getTransmitter().indexOf("<");
+		
+		de.setText(textoscorreos.get(posicion).getTransmitter().substring(iend));
 		
 		asunto.setText(textoscorreos.get(posicion).getSubject());
 		
