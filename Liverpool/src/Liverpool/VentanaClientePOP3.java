@@ -32,6 +32,7 @@ public class VentanaClientePOP3 extends JFrame {
 	private JPanel contentPane;
 	static Modelo mimodelo;
 	static ArrayList <ReceivedMail> correosrecibidos = new ArrayList<ReceivedMail>();
+	static ArrayList <String> recibidosarray = new ArrayList<String>(); 
 	static String user;
 	static String password;
 	static JList bandeja;
@@ -62,7 +63,7 @@ public class VentanaClientePOP3 extends JFrame {
 		this.user=user;
 		this.password=password;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 592, 346);
+		setBounds(100, 100, 702, 429);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -75,7 +76,7 @@ public class VentanaClientePOP3 extends JFrame {
 				
 			}
 		});
-		btnAbrirCorreo.setBounds(458, 21, 108, 35);
+		btnAbrirCorreo.setBounds(568, 21, 108, 35);
 		contentPane.add(btnAbrirCorreo);
 		
 		
@@ -88,7 +89,7 @@ public class VentanaClientePOP3 extends JFrame {
 				
 			}
 		});
-		btnEscribirCorreo.setBounds(458, 77, 108, 35);
+		btnEscribirCorreo.setBounds(568, 67, 108, 35);
 		contentPane.add(btnEscribirCorreo);
 		
 		
@@ -99,12 +100,12 @@ public class VentanaClientePOP3 extends JFrame {
 				dispose();
 			}
 		});
-		btnCerrarCorreo.setBounds(458, 134, 108, 35);
+		btnCerrarCorreo.setBounds(568, 113, 108, 35);
 		contentPane.add(btnCerrarCorreo);
 		
 		JPanel lista = new JPanel();
 		lista.setBackground(Color.WHITE);
-		lista.setBounds(10, 21, 438, 275);
+		lista.setBounds(10, 21, 548, 358);
 		contentPane.add(lista);
 		
 		try {
@@ -145,11 +146,12 @@ public class VentanaClientePOP3 extends JFrame {
 	  
 	            
 	            for(int i=0;i<mensajes.length;i++) {
-	            ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom().toString(),mensajes[i].getSubject().toString(),mensajes[i].getContent().toString());
-	            correosrecibidos.add(correo);
+	            //ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom().toString(),mensajes[i].getSubject().toString(),mensajes[i].getContent().toString());
+	            //correosrecibidos.add(correo);
+	            	recibidosarray.add("Recibido de: "+mensajes[i].getFrom().toString() + " Asunto: "+mensajes[i].getSubject().toString());
 	            }
-	            		
-	            modelocorreos.addAll(correosrecibidos);
+	            modelocorreos.addAll(recibidosarray);		
+	            //modelocorreos.addAll(correosrecibidos);
 	            
 	        }catch(javax.mail.NoSuchProviderException e) {	
 	        } catch (MessagingException e) {
