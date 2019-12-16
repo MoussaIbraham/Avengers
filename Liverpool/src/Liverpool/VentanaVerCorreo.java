@@ -2,6 +2,7 @@ package Liverpool;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,6 +17,9 @@ public class VentanaVerCorreo extends JFrame {
 	private JTextField de;
 	private JTextField asunto;
 	static Modelo mimodelo;
+	JTextArea Cuerpo = new JTextArea();
+	static ArrayList <ReceivedMail> textoscorreos = new ArrayList<ReceivedMail>();
+	private int posicion;
 
 	/**
 	 * Launch the application.
@@ -24,7 +28,7 @@ public class VentanaVerCorreo extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaVerCorreo frame = new VentanaVerCorreo(mimodelo);
+					VentanaVerCorreo frame = new VentanaVerCorreo(mimodelo, -1, textoscorreos);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,11 +37,11 @@ public class VentanaVerCorreo extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-	public VentanaVerCorreo(Modelo mimodelo) {
+
+	public VentanaVerCorreo(Modelo mimodelo, int posicion, ArrayList<ReceivedMail> textoscorreos) {
 		this.mimodelo=mimodelo;
+		this.textoscorreos=textoscorreos;
+		this.posicion=posicion;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -45,9 +49,9 @@ public class VentanaVerCorreo extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(10, 82, 414, 168);
-		contentPane.add(textArea);
+		
+		Cuerpo.setBounds(10, 82, 414, 168);
+		contentPane.add(Cuerpo);
 		
 		JLabel lblDe = new JLabel(mimodelo.getVerCorreoTextoLabelde());
 		lblDe.setBounds(10, 11, 48, 14);
@@ -73,10 +77,10 @@ public class VentanaVerCorreo extends JFrame {
 	
 	public void vertexto() {
 		
+		de.setText(textoscorreos.get(posicion).getTransmitter());
 		
+		asunto.setText(textoscorreos.get(posicion).getSubject());
 		
-		
+		Cuerpo.setText(textoscorreos.get(posicion).getBodyMail());	
 	}
-	
-	
 }

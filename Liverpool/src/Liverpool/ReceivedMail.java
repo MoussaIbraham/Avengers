@@ -10,7 +10,6 @@ public class ReceivedMail {
 		this.bodyMail = bodyMail;
 		this.subject = subject;
 		this.transmitter = transmitter;
-		this.receivedDate = receivedDate;
 	}
 
 	private String bodyMail;
@@ -36,16 +35,4 @@ public class ReceivedMail {
 	public void setTransmitter(String transmitter) {
 		this.transmitter = transmitter;
 	}
-	public String getReceivedDate() {
-		return receivedDate;
-	}
-	public void setReceivedDate(String receivedDate) {
-		this.receivedDate = receivedDate;
-	}
-	
-	
-	
-	
-	
-
 }

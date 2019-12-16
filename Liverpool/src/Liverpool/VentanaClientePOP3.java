@@ -32,8 +32,8 @@ public class VentanaClientePOP3 extends JFrame {
 
 	private JPanel contentPane;
 	static Modelo mimodelo;
-	static ArrayList <ReceivedMail> correosrecibidos = new ArrayList<ReceivedMail>();
-	static ArrayList <String> recibidosarray = new ArrayList<String>(); 
+	static ArrayList <ReceivedMail> textoscorreos = new ArrayList<ReceivedMail>();
+	static ArrayList <String> recibidosarray = new ArrayList<String>();
 	static String user;
 	static String password;
 	static JList bandeja;
@@ -73,7 +73,11 @@ public class VentanaClientePOP3 extends JFrame {
 		
 		JButton btnAbrirCorreo = new JButton(mimodelo.getTextoPOPBotonAbrirCorreo());
 		btnAbrirCorreo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {	
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				abrircorreo();
+				
 				
 			}
 		});
@@ -147,12 +151,12 @@ public class VentanaClientePOP3 extends JFrame {
 	  
 	            
 	            for(int i=0;i<mensajes.length;i++) {
-	            //ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom().toString(),mensajes[i].getSubject().toString(),mensajes[i].getContent().toString());
-	            //correosrecibidos.add(correo);
+	           
 	            	recibidosarray.add("Recibido de: "+mensajes[i].getFrom()[0] + " Asunto: "+mensajes[i].getSubject().toString());
+	            	 ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom()[0].toString(),mensajes[i].getSubject().toString(),mensajes[i].getContent().toString());
+	            	textoscorreos.add(correo);
 	            }
 	            modelocorreos.addAll(recibidosarray);		
-	            //modelocorreos.addAll(correosrecibidos);
 	            
 	        }catch(javax.mail.NoSuchProviderException e) {	
 	        } catch (MessagingException e) {
@@ -161,5 +165,17 @@ public class VentanaClientePOP3 extends JFrame {
 	        catch(NullPointerException e) {
 	        	
 	        }
+	}
+	
+	public static void abrircorreo() {
+		
+		int selecccionado = bandeja.getSelectedIndex();;
+		
+		
+		VentanaVerCorreo verventana = new VentanaVerCorreo(mimodelo, selecccionado, textoscorreos);
+		verventana.setVisible(true);
+		
+		
+		
 	}
 }
