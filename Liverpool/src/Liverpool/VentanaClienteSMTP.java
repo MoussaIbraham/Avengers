@@ -211,7 +211,7 @@ public class VentanaClienteSMTP extends JFrame {
 
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(356, 144, 200, 135);
+		scrollPane.setBounds(346, 145, 210, 134);
 		assunt.add(scrollPane);
 
 		JList listAdjunt = new JList();

@@ -1,20 +1,17 @@
 package Liverpool;
 
+import javax.mail.Address;
+
 public class ReceivedMail {
 	
-	public ReceivedMail() {}
 	
-	
-	
-	public ReceivedMail(String bodyMail, String subject, String transmitter, String receivedDate) {
+	public ReceivedMail(String transmitter, String subject, String bodyMail) {
 		super();
 		this.bodyMail = bodyMail;
 		this.subject = subject;
 		this.transmitter = transmitter;
 		this.receivedDate = receivedDate;
 	}
-
-
 
 	private String bodyMail;
 	private String subject;

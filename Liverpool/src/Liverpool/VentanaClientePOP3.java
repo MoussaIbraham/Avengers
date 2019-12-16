@@ -35,7 +35,7 @@ public class VentanaClientePOP3 extends JFrame {
 	static String user;
 	static String password;
 	static JList bandeja;
-	static DefaultListModel modelocorreos;
+	static DefaultListModel modelocorreos = new DefaultListModel();
 
 	/**
 	 * Launch the application.
@@ -45,7 +45,7 @@ public class VentanaClientePOP3 extends JFrame {
 			public void run() {
 				try {
 					mimodelo = new Modelo();
-					VentanaClientePOP3 frame = new VentanaClientePOP3(mimodelo, "dmatasalazar.sanjose@alumnado.fundacionloyola.net", "21485902");
+					VentanaClientePOP3 frame = new VentanaClientePOP3(mimodelo, user, password);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -95,6 +95,7 @@ public class VentanaClientePOP3 extends JFrame {
 		JButton btnCerrarCorreo = new JButton(mimodelo.getTextoPOPBotonCerrarCorreo());
 		btnCerrarCorreo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				dispose();
 			}
 		});
@@ -111,8 +112,10 @@ public class VentanaClientePOP3 extends JFrame {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		bandeja = new JList(modelocorreos);
+		bandeja = new JList();
+		bandeja.setModel(modelocorreos);
 		lista.add(bandeja);
+		
 	}
 	
 
@@ -139,18 +142,21 @@ public class VentanaClientePOP3 extends JFrame {
 	            folder.open(Folder.READ_ONLY);
 	            Message[] mensajes = folder.getMessages();	
 
-	            System.out.println("EStos son todos los correos= "+(mensajes[1].getSubject().toString()));
+	  
 	            
-	            for(int i=0;i<mensajes.length-1;i++) {
-	            	System.out.println(""+mensajes[1].getFrom().toString());
-	            ReceivedMail correo = new ReceivedMail(mensajes[1].getFrom().toString(),mensajes[1].getSubject().toString(),mensajes[1].getContent().toString(),mensajes[1].getReceivedDate().toString());
+	            for(int i=0;i<mensajes.length;i++) {
+	            ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom().toString(),mensajes[i].getSubject().toString(),mensajes[i].getContent().toString());
 	            correosrecibidos.add(correo);
 	            }
 	            		
 	            modelocorreos.addAll(correosrecibidos);
+	            
 	        }catch(javax.mail.NoSuchProviderException e) {	
 	        } catch (MessagingException e) {
 				e.printStackTrace();
-			}     
+			}
+	        catch(NullPointerException e) {
+	        	
+	        }
 	}
 }
