@@ -1,14 +1,18 @@
 package Liverpool;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import com.sun.mail.pop3.POP3Store;
-
+import javax.swing.JScrollPane;
+import javax.swing.JList;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -16,26 +20,16 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import java.awt.Color;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.security.NoSuchProviderException;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.awt.event.ActionEvent;
-
-public class VentanaClientePOP3 extends JFrame {
-
+public class VentanaPruebaClientePOP3 extends JFrame {
+	
 	private JPanel contentPane;
 	static Modelo mimodelo;
 	static ArrayList <ReceivedMail> correosrecibidos = new ArrayList<ReceivedMail>();
-	static String user;
-	static String password;
-	static JList bandeja;
-	static DefaultListModel modelocorreos;
+	private static String user = "dmatasalazar.sanjose@alumnado.fundacionloyola.net";
+	private static String password = "21485902";
+	private static JList bandeja;
+	private static DefaultListModel modelocorreos = new DefaultListModel();
 
 	/**
 	 * Launch the application.
@@ -44,8 +38,14 @@ public class VentanaClientePOP3 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					mimodelo = new Modelo();
-					VentanaClientePOP3 frame = new VentanaClientePOP3(mimodelo, "dmatasalazar.sanjose@alumnado.fundacionloyola.net", "21485902");
+					VentanaPruebaClientePOP3 frame = new VentanaPruebaClientePOP3();
+					try {
+						receiveEmail();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					bandeja = new JList();
+					bandeja.setModel(modelocorreos);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,67 +57,56 @@ public class VentanaClientePOP3 extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaClientePOP3(Modelo mimodelo,String user, String password) {
-		this.mimodelo=mimodelo;
-		this.user=user;
-		this.password=password;
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 592, 346);
+	public VentanaPruebaClientePOP3() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 40, 258, 198);
+		contentPane.add(scrollPane);
 		
-		JButton btnAbrirCorreo = new JButton(mimodelo.getTextoPOPBotonAbrirCorreo());
-		btnAbrirCorreo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {	
-				
-			}
-		});
-		btnAbrirCorreo.setBounds(458, 21, 108, 35);
+		JList bandeja = new JList();
+		scrollPane.setRowHeaderView(bandeja);
+		
+		JButton btnAbrirCorreo = new JButton("New button");
+		btnAbrirCorreo.setBounds(318, 40, 85, 21);
 		contentPane.add(btnAbrirCorreo);
-		
-		
-		JButton btnEscribirCorreo = new JButton(mimodelo.getTextoPOPBotonEscribirCorreo());
-		btnEscribirCorreo.addActionListener(new ActionListener() {
+		btnAbrirCorreo.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				VentanaClienteSMTP escribircorreo = new VentanaClienteSMTP();
-				escribircorreo.setVisible(true);
-				
 			}
 		});
-		btnEscribirCorreo.setBounds(458, 77, 108, 35);
+		
+		JButton btnEscribirCorreo = new JButton("New button");
+		btnEscribirCorreo.setBounds(318, 122, 85, 21);
 		contentPane.add(btnEscribirCorreo);
+		btnEscribirCorreo.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new VentanaClienteSMTP();	
+			}
+		});
 		
 		
-		JButton btnCerrarCorreo = new JButton(mimodelo.getTextoPOPBotonCerrarCorreo());
+		JButton btnCerrarCorreo = new JButton("New button");
+		btnCerrarCorreo.setBounds(318, 208, 85, 21);
+		contentPane.add(btnCerrarCorreo);
 		btnCerrarCorreo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnCerrarCorreo.setBounds(458, 134, 108, 35);
-		contentPane.add(btnCerrarCorreo);
-		
-		JPanel lista = new JPanel();
-		lista.setBackground(Color.WHITE);
-		lista.setBounds(10, 21, 438, 275);
-		contentPane.add(lista);
-		
-		try {
-			receiveEmail();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		bandeja = new JList(modelocorreos);
-		lista.add(bandeja);
 	}
 	
-
 	public static void receiveEmail() throws IOException {  
-			  
+		  
 		 Properties prop = new Properties();
 	        // Deshabilitamos TLS
 	        prop.setProperty("mail.pop3.starttls.enable", "false");
@@ -151,6 +140,7 @@ public class VentanaClientePOP3 extends JFrame {
 	        }catch(javax.mail.NoSuchProviderException e) {	
 	        } catch (MessagingException e) {
 				e.printStackTrace();
-			}     
+			}catch (NullPointerException e) {
+			}
 	}
 }
