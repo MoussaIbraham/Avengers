@@ -24,6 +24,8 @@ import javax.swing.*;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -130,12 +132,9 @@ public class DirigentesWindow extends JFrame {
 		btnSalir.setBounds(461, 317, 89, 23);
 		contentPane.add(btnSalir);
 
-		list.addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-
-				if (e.getValueIsAdjusting()) {
+		list.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				if (evt.getClickCount() == 2) {
 					ficheroSelec = "";
 
 					String fic = list.getSelectedValue().toString();
@@ -147,7 +146,7 @@ public class DirigentesWindow extends JFrame {
 								direcSelec = cliente.client.printWorkingDirectory();
 								FTPFile[] ff2 = null;
 								ff2 = cliente.client.listFiles();
-								
+
 								LlenarLista(ff2, direcSelec);
 							} catch (Exception e2) {
 								// TODO: handle exception
@@ -159,30 +158,29 @@ public class DirigentesWindow extends JFrame {
 							fic = fic.substring(1);
 							System.out.println(fic);
 							String direcSelec2 = "";
-							if (direcSelec.equals("/")) 
+							if (direcSelec.equals("/"))
 								direcSelec2 = direcSelec + fic;
-							 else 
+							else
 								direcSelec2 = direcSelec + "/" + fic;
-								FTPFile[] ff2 = null;
-								try {
-									cliente.client.changeWorkingDirectory(direcSelec2);
-									ff2 = cliente.client.listFiles();
-									direcSelec = direcSelec2;
+							FTPFile[] ff2 = null;
+							try {
+								cliente.client.changeWorkingDirectory(direcSelec2);
+								ff2 = cliente.client.listFiles();
+								direcSelec = direcSelec2;
 
-									LlenarLista(ff2, direcSelec);
-								} catch (IOException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
+								LlenarLista(ff2, direcSelec);
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 
-							
 						} else {
 							ficheroSelec = direcSelec;
-							if(direcSelec.equals("/")) 
+							if (direcSelec.equals("/"))
 								ficheroSelec += fic;
-							 else 
+							else
 								ficheroSelec += "/" + fic;
-							
+
 						}
 					}
 				}
@@ -191,53 +189,48 @@ public class DirigentesWindow extends JFrame {
 
 		btnSubirArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (list.isSelectionEmpty()) {
-					JOptionPane.showMessageDialog(null, "Seleccione donde quiera subir el archivo");
-				} else {
-					try {
-						cliente.getClient().setFileType(FTP.BINARY_FILE_TYPE);
-					} catch (IOException e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}
-					String strDirectorio = "";
-					JFileChooser chooser = new JFileChooser();
-					chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-					try {
-						cliente.getClient().changeWorkingDirectory(list.getSelectedValue().toString());
-					} catch (IOException e2) {
-						JOptionPane.showMessageDialog(null, mimodelo.getTextoGestionAyudaSubida());
-					}
-					System.out.println(list.getSelectedValue().toString());
-					chooser.setDialogTitle(mimodelo.getTextoGestionAyudaSubida2());
-					int returnVal = chooser.showDialog(chooser, mimodelo.getTextoGestionAyudaSubida3());
-					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						File file = chooser.getSelectedFile();
-						strDirectorio = file.getAbsolutePath();
-						BufferedInputStream in = null;
-						try {
-							in = new BufferedInputStream(new FileInputStream(strDirectorio));
-						} catch (FileNotFoundException e1) {
-							e1.printStackTrace();
-						}
-						try {
-							System.out.println(file.getName());
-							cliente.getClient().storeFile(file.getName(), in);
-							FTPFile[] ff2 = null;
-							ff2 = cliente.client.listFiles();
+				try {
+					cliente.getClient().setFileType(FTP.BINARY_FILE_TYPE);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				String strDirectorio = "";
+				JFileChooser chooser = new JFileChooser();
+				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				try {
+					cliente.client.changeWorkingDirectory(direcSelec);
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
 
-							lista.removeAllElements();
+				chooser.setDialogTitle(mimodelo.getTextoGestionAyudaSubida2());
+				int returnVal = chooser.showDialog(chooser, mimodelo.getTextoGestionAyudaSubida3());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = chooser.getSelectedFile();
+					strDirectorio = file.getAbsolutePath();
+					BufferedInputStream in = null;
+					try {
+						in = new BufferedInputStream(new FileInputStream(strDirectorio));
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					}
+					try {
+						System.out.println(file.getName());
+						cliente.getClient().storeFile(file.getName(), in);
+						FTPFile[] ff2 = null;
+						ff2 = cliente.client.listFiles();
 
-							LlenarLista(ff2, direcSelec);
-							JOptionPane.showMessageDialog(null,
-									mimodelo.getTextoVentanaEmergenteGestionSubidaExitosa());
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
+						lista.removeAllElements();
+
+						LlenarLista(ff2, direcSelec);
+						JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionSubidaExitosa());
+					} catch (IOException e1) {
+						e1.printStackTrace();
 					}
-					if (strDirectorio.equals("")) {
-						JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionSubidaFallo());
-					}
+				}
+				if (strDirectorio.equals("")) {
+					JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionSubidaFallo());
 				}
 
 			}
@@ -247,35 +240,31 @@ public class DirigentesWindow extends JFrame {
 
 		btnDescargarArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (list.isSelectionEmpty()) {
-					JOptionPane.showMessageDialog(null, "Seleccione el archivo que quiera descargar.");
-				} else {
-					try {
-						cliente.getClient().changeWorkingDirectory(list.getSelectedValue().toString());
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(null, mimodelo.getTextoGestionAyudaBajada());
-					}
-					String file = list.getSelectedValue().toString();
-					BufferedOutputStream descarga = null;
-					System.out.println(file);
-					try {
-						descarga = new BufferedOutputStream(new FileOutputStream(file));
-					} catch (FileNotFoundException e1) {
 
-					}
-					try {
-						if (cliente.getClient().retrieveFile(file, descarga)) {
-							JOptionPane.showMessageDialog(null,
-									mimodelo.getTextoVentanaEmergenteGestionBajadaExitosa());
-						} else {
-							JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionBajadaFallo());
-						}
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+				try {
+					cliente.client.changeWorkingDirectory(direcSelec);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 
+				String file = list.getSelectedValue().toString();
+				BufferedOutputStream descarga = null;
+				System.out.println(file);
+				try {
+					descarga = new BufferedOutputStream(new FileOutputStream(file));
+				} catch (FileNotFoundException e1) {
+
+				}
+				try {
+					if (cliente.client.retrieveFile(file, descarga)) {
+						JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionBajadaExitosa());
+					} else {
+						JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionBajadaFallo());
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 
 			}
@@ -288,14 +277,20 @@ public class DirigentesWindow extends JFrame {
 				String nombreCarpeta = JOptionPane.showInputDialog(null, mimodelo.getTextoGestionAyudaCrear(),
 						mimodelo.getTextoGestionAyudaCrear2());
 
+				try {
+					cliente.client.changeWorkingDirectory(direcSelec);
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+
 				if (!(nombreCarpeta == null)) {
-					String directorio = "/";
-					if (!directorio.equals("/"))
-						directorio = directorio + "/";
-					directorio += nombreCarpeta.trim();
+					String direcCarpeta = direcSelec;
+					if (!direcSelec.equals("/"))
+					//	direcCarpeta = direcCarpeta + "/";
+					direcCarpeta += nombreCarpeta.trim();
 
 					try {
-						if (cliente.getClient().makeDirectory(directorio)) {
+						if (cliente.client.makeDirectory(nombreCarpeta.trim())) {
 							String m = nombreCarpeta.trim()
 									+ mimodelo.getTextoVentanaEmergenteGestionCrearCarpetaExito();
 							JOptionPane.showMessageDialog(null, m);
@@ -303,10 +298,7 @@ public class DirigentesWindow extends JFrame {
 							FTPFile[] ff2 = null;
 							ff2 = cliente.client.listFiles();
 
-							lista.removeAllElements();
-
 							LlenarLista(ff2, direcSelec);
-							SwingUtilities.updateComponentTreeUI(contentPane);
 						}
 					} catch (HeadlessException e1) {
 						// TODO Auto-generated catch block
@@ -327,6 +319,11 @@ public class DirigentesWindow extends JFrame {
 				if (list.isSelectionEmpty()) {
 					JOptionPane.showMessageDialog(null, "Seleccione la carpeta que quiera borrar.");
 				} else {
+					try {
+						cliente.client.changeWorkingDirectory(direcSelec);
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
 					int index = list.getSelectedIndex();
 					String fichero = list.getSelectedValue().toString();
 					if (fichero.substring(0, 1).equals("/")) {
@@ -334,9 +331,14 @@ public class DirigentesWindow extends JFrame {
 						if (Seleccion == JOptionPane.OK_OPTION) {
 							try {
 								if (index > -1)
-									lista.removeElementAt(index);
-								cliente.client.removeDirectory(fichero);
-								JOptionPane.showMessageDialog(null, "La carpeta se ha borrado correctamente.");
+									if (cliente.client.removeDirectory(fichero)) {
+										JOptionPane.showMessageDialog(null, "La carpeta se ha borrado correctamente.");
+										lista.removeElementAt(index);
+									} else {
+										JOptionPane.showMessageDialog(null,
+												"Para poder borrar la carpeta, primero tiene que estar vacia.");
+									}
+
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}
@@ -353,7 +355,7 @@ public class DirigentesWindow extends JFrame {
 
 		btnRenombrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// Llamar ventana renombrar
+
 				if (list.isSelectionEmpty()) {
 					JOptionPane.showMessageDialog(null, "Seleccione lo que quiera renombrar.");
 				} else {
@@ -385,7 +387,7 @@ public class DirigentesWindow extends JFrame {
 		JButton btnEliminarArchivo = new JButton(mimodelo.getTextoBotonBorrar2());
 		btnEliminarArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Llamar ventana Borrar
+
 				if (list.isSelectionEmpty()) {
 					JOptionPane.showMessageDialog(null, "Seleccione el archivo que quiera eliminar.");
 				} else {
@@ -425,15 +427,14 @@ public class DirigentesWindow extends JFrame {
 
 		list.removeAll();
 
-		lista.addElement(direc2);
-
 		try {
 			client.changeWorkingDirectory(direc2);
 		} catch (Exception e) {
 
 		}
-
 		direcSelec = direc2;
+
+		lista.addElement(direc2);
 
 		for (int i = 0; i < files.length; i++) {
 			if (!(files[i].getName()).equals(".") && !(files[i].getName()).equals("..")) {
@@ -450,8 +451,8 @@ public class DirigentesWindow extends JFrame {
 		try {
 			list.setModel(lista);
 		} catch (NullPointerException e) {
-			
+
 		}
-		
+
 	}
 }
