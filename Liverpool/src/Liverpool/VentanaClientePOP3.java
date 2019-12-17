@@ -175,8 +175,6 @@ public class VentanaClientePOP3 extends JFrame {
 	            		ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom()[0].toString(),mensajes[i].getSubject().toString(),getTextFromMimeMultipart(mensajes[i]));
 			            textoscorreos.add(correo);
 		            	recibidosarray.add("Recibido de: "+mensajes[i].getFrom()[0] + " Asunto: "+mensajes[i].getSubject().toString());
-	            		
-	            		
 	            	}
 	            }
 	            modelocorreos.addAll(recibidosarray);	
@@ -206,10 +204,12 @@ public class VentanaClientePOP3 extends JFrame {
 	
 	public static String getTextFromMimeMultipart(Message mimeMultipart) {
 		
+		String result = "";
+		
 		try {
         Multipart multi = (Multipart) mimeMultipart.getContent();
-        String result = "";
         int partCount = multi.getCount();
+        
         for (int i = 0; i < partCount; i++) {
             BodyPart bodyPart = multi.getBodyPart(i);
             if (bodyPart.isMimeType("text/plain")) {
@@ -222,9 +222,12 @@ public class VentanaClientePOP3 extends JFrame {
                 result = result + getTextFromMimeMultipart((Message) bodyPart.getContent());
             }
         }
-        return result;
     }
 	catch(IOException e) {
 		
+	} catch (MessagingException e) {
+		e.printStackTrace();
 	}
+		return result;
+}
 }
