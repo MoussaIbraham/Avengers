@@ -80,8 +80,6 @@ public class VentanaClientePOP3 extends JFrame {
 				
 				
 				abrircorreo();
-				
-				
 			}
 		});
 		btnAbrirCorreo.setBounds(568, 21, 108, 35);
@@ -92,7 +90,7 @@ public class VentanaClientePOP3 extends JFrame {
 		btnEscribirCorreo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				VentanaClienteSMTP escribircorreo = new VentanaClienteSMTP();
+				VentanaClienteSMTP escribircorreo = new VentanaClienteSMTP(user, password);
 				escribircorreo.setVisible(true);
 				
 			}

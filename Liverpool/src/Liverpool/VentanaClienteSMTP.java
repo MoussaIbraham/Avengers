@@ -51,7 +51,7 @@ public class VentanaClienteSMTP extends JFrame {
 	private JTextField addressee;
 	private JTextField subject;
 	private JTextField bodyMenssage;
-	Modelo modelo = new Modelo();
+	static Modelo modelo = new Modelo();
 	ArrayList<String> filename = new ArrayList<String>();
 	ArrayList<String> filepath = new ArrayList<String>();
 	Transport t;
@@ -59,8 +59,8 @@ public class VentanaClienteSMTP extends JFrame {
 	/*
 	 * Datos del usuario y conexión
 	 */
-	String username = modelo.getAlmacenNombreUsuario();
-	String pasword =  modelo.getAlmacenContraseña();
+	static String username = modelo.getAlmacenNombreUsuario();
+	static String pasword =  modelo.getAlmacenContraseña();
 	String server = modelo.getTextoServerSMTP();
 	int puerto = 25;
 
@@ -71,7 +71,7 @@ public class VentanaClienteSMTP extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaClienteSMTP frame = new VentanaClienteSMTP();
+					VentanaClienteSMTP frame = new VentanaClienteSMTP(username, pasword);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -147,8 +147,10 @@ public class VentanaClienteSMTP extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param password 
+	 * @param user 
 	 */
-	public VentanaClienteSMTP() {
+	public VentanaClienteSMTP(String user, String password) {
 		setTitle("Send Email");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 592, 377);
