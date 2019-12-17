@@ -140,12 +140,9 @@ public class VentanaClientePOP3 extends JFrame {
 	public static void receiveEmail() throws IOException {  
 			  
 		 Properties prop = new Properties();
-	        // Deshabilitamos TLS
 	        prop.setProperty("mail.pop3.starttls.enable", "false");
-	        // Hay que usar SSL
 	        prop.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	        prop.setProperty("mail.pop3.socketFactory.fallback", "false");
-	        // Puerto 995 para conectarse.
 	        prop.setProperty("mail.pop3.port", "995");
 	        prop.setProperty("mail.pop3.socketFactory.port", "995");
 	        
@@ -161,7 +158,6 @@ public class VentanaClientePOP3 extends JFrame {
 	            Message[] mensajes = folder.getMessages();	
 
 	  
-	            
 	            for(int i=0;i<mensajes.length;i++) {
 	           
 	            	if(mensajes[i].isMimeType("text/*")) {
@@ -170,7 +166,7 @@ public class VentanaClientePOP3 extends JFrame {
 	            	recibidosarray.add("Recibido de: "+mensajes[i].getFrom()[0] + " Asunto: "+mensajes[i].getSubject().toString());
 	            	}
 	            	else if(mensajes[i].isMimeType("multipart/*")) {
-	            		ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom()[0].toString(),mensajes[i].getSubject().toString(),getTextFromMimeMultipart(mensajes[i]));
+	            		ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom()[0].toString(),mensajes[i].getSubject().toString(),transformartexto(mensajes[i]));
 			            textoscorreos.add(correo);
 		            	recibidosarray.add("Recibido de: "+mensajes[i].getFrom()[0] + " Asunto: "+mensajes[i].getSubject().toString());
 	            	}
@@ -190,19 +186,14 @@ public class VentanaClientePOP3 extends JFrame {
 	
 	public static void abrircorreo() {
 		
-		int selecccionado = bandeja.getSelectedIndex();;
-		
-		
+		int selecccionado = bandeja.getSelectedIndex();;		
 		VentanaVerCorreo verventana = new VentanaVerCorreo(mimodelo, selecccionado, textoscorreos);
 		verventana.setVisible(true);
-		
-		
-		
 	}
 	
-	public static String getTextFromMimeMultipart(Message mimeMultipart) {
+	public static String transformartexto(Message mimeMultipart) {
 		
-		String result = "";
+		String textoArreglado = "";
 		
 		try {
         Multipart multi = (Multipart) mimeMultipart.getContent();
@@ -211,13 +202,13 @@ public class VentanaClientePOP3 extends JFrame {
         for (int i = 0; i < partCount; i++) {
             BodyPart bodyPart = multi.getBodyPart(i);
             if (bodyPart.isMimeType("text/plain")) {
-                result = result + bodyPart.getContent();
+                textoArreglado = textoArreglado + bodyPart.getContent();
                 break;
             } else if (bodyPart.isMimeType("text/html")) {
                 String html = (String) bodyPart.getContent();
-                result = html;
+                textoArreglado = html;
             } else if (bodyPart.getContent() instanceof MimeMultipart) {
-                result = result + getTextFromMimeMultipart((Message) bodyPart.getContent());
+                textoArreglado = textoArreglado + transformartexto((Message) bodyPart.getContent());
             }
         }
     }
@@ -226,6 +217,6 @@ public class VentanaClientePOP3 extends JFrame {
 	} catch (MessagingException e) {
 		e.printStackTrace();
 	}
-		return result;
+		return textoArreglado;
 }
 }
