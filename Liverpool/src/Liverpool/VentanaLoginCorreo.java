@@ -72,6 +72,8 @@ public class VentanaLoginCorreo extends JFrame {
 
 				VentanaClientePOP3 correos = new VentanaClientePOP3(mimodelo,correo.getText(),contraseña.getText());
 				correos.setVisible(true);
+				HiloCorreo hilo = new HiloCorreo(correos);
+				hilo.start();
 				
 			}
 		});

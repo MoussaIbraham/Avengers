@@ -59,8 +59,8 @@ public class VentanaClienteSMTP extends JFrame {
 	/*
 	 * Datos del usuario y conexión
 	 */
-	static String username = modelo.getAlmacenNombreUsuario();
-	static String pasword =  modelo.getAlmacenContraseña();
+	static String username;
+	static String pasword;
 	String server = modelo.getTextoServerSMTP();
 	int puerto = 25;
 
@@ -151,6 +151,8 @@ public class VentanaClienteSMTP extends JFrame {
 	 * @param user 
 	 */
 	public VentanaClienteSMTP(String user, String password) {
+		username = user;
+		pasword = password;
 		setTitle("Send Email");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 592, 377);
