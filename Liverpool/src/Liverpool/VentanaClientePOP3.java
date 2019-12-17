@@ -9,12 +9,15 @@ import javax.swing.border.EmptyBorder;
 
 import com.sun.mail.pop3.POP3Store;
 
+import javax.mail.BodyPart;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -163,11 +166,18 @@ public class VentanaClientePOP3 extends JFrame {
 	            
 	            for(int i=0;i<mensajes.length;i++) {
 	           
+	            	if(mensajes[i].isMimeType("text/*")) {
 	            	ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom()[0].toString(),mensajes[i].getSubject().toString(),mensajes[i].getContent().toString());
 		            textoscorreos.add(correo);
-		            
 	            	recibidosarray.add("Recibido de: "+mensajes[i].getFrom()[0] + " Asunto: "+mensajes[i].getSubject().toString());
-	            	
+	            	}
+	            	else if(mensajes[i].isMimeType("multipart/*")) {
+	            		ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom()[0].toString(),mensajes[i].getSubject().toString(),getTextFromMimeMultipart(mensajes[i]));
+			            textoscorreos.add(correo);
+		            	recibidosarray.add("Recibido de: "+mensajes[i].getFrom()[0] + " Asunto: "+mensajes[i].getSubject().toString());
+	            		
+	            		
+	            	}
 	            }
 	            modelocorreos.addAll(recibidosarray);	
 	    		bandeja = new JList();
@@ -191,6 +201,30 @@ public class VentanaClientePOP3 extends JFrame {
 		verventana.setVisible(true);
 		
 		
+		
+	}
+	
+	public static String getTextFromMimeMultipart(Message mimeMultipart) {
+		
+		try {
+        Multipart multi = (Multipart) mimeMultipart.getContent();
+        String result = "";
+        int partCount = multi.getCount();
+        for (int i = 0; i < partCount; i++) {
+            BodyPart bodyPart = multi.getBodyPart(i);
+            if (bodyPart.isMimeType("text/plain")) {
+                result = result + bodyPart.getContent();
+                break;
+            } else if (bodyPart.isMimeType("text/html")) {
+                String html = (String) bodyPart.getContent();
+                result = html;
+            } else if (bodyPart.getContent() instanceof MimeMultipart) {
+                result = result + getTextFromMimeMultipart((Message) bodyPart.getContent());
+            }
+        }
+        return result;
+    }
+	catch(IOException e) {
 		
 	}
 }

@@ -5,17 +5,19 @@ import javax.mail.Address;
 public class ReceivedMail {
 	
 	
+
+
 	public ReceivedMail(String transmitter, String subject, String bodyMail) {
-		super();
-		this.bodyMail = bodyMail;
-		this.subject = subject;
-		this.transmitter = transmitter;
+		
+		this.transmitter=transmitter;
+		this.subject=subject;
+		this.bodyMail=bodyMail;
 	}
 
 	private String bodyMail;
 	private String subject;
 	private String transmitter;
-	private String receivedDate;
+	
 	
 	public String getBodyMail() {
 		return bodyMail;

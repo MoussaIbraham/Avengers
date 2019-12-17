@@ -43,14 +43,14 @@ public class VentanaVerCorreo extends JFrame {
 		this.textoscorreos=textoscorreos;
 		this.posicion=posicion;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 297);
+		setBounds(100, 100, 655, 297);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		
-		Cuerpo.setBounds(10, 82, 414, 168);
+		Cuerpo.setBounds(10, 82, 619, 168);
 		contentPane.add(Cuerpo);
 		
 		JLabel lblDe = new JLabel(mimodelo.getVerCorreoTextoLabelde());
@@ -62,13 +62,13 @@ public class VentanaVerCorreo extends JFrame {
 		contentPane.add(lblAsunto);
 		
 		de = new JTextField();
-		de.setBounds(68, 8, 356, 20);
+		de.setBounds(68, 8, 561, 20);
 		contentPane.add(de);
 		de.setColumns(10);
 		
 		asunto = new JTextField();
 		asunto.setColumns(10);
-		asunto.setBounds(68, 51, 356, 20);
+		asunto.setBounds(68, 51, 561, 20);
 		contentPane.add(asunto);
 		
 		vertexto();
@@ -83,6 +83,9 @@ public class VentanaVerCorreo extends JFrame {
 		de.setText(textoscorreos.get(posicion).getTransmitter().substring(iend));
 		
 		asunto.setText(textoscorreos.get(posicion).getSubject());
+		
+		
+		
 		
 		Cuerpo.setText(textoscorreos.get(posicion).getBodyMail());	
 	}
