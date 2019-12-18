@@ -12,7 +12,9 @@ import java.awt.Rectangle;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -35,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 public class DirigentesWindow extends JFrame {
 
@@ -55,23 +58,43 @@ public class DirigentesWindow extends JFrame {
 	 * @throws SQLException
 	 */
 	public DirigentesWindow(String Usuario, String pass, Modelo mimodelo) throws SQLException {
+		super("VENTANA DE USUARIO");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\enano\\git\\Avengers\\Avengers\\Liverpool\\img\\escudo.png"));
 		this.mimodelo = mimodelo;
 		ClientFTP cliente = new ClientFTP(Usuario, pass, mimodelo);
+		Border thickBorder = new LineBorder(Color.YELLOW, 2);
 		
+		
+		JButton btnEliminarArchivo = new JButton(mimodelo.getTextoBotonBorrar2());
+		btnEliminarArchivo.setForeground(new Color(0, 0, 0));
+		btnEliminarArchivo.setBackground(new Color(255, 255, 255));	
+		btnEliminarArchivo.setBorder(thickBorder);
 		JButton btnSalir = new JButton(mimodelo.getTextoBotonSalir());
-		btnSalir.setForeground(new Color(255, 0, 0));
+		btnSalir.setForeground(new Color(204, 51, 0));
+		btnSalir.setBackground(new Color(255, 255, 255));	
+		btnSalir.setBorder(thickBorder);
 		JButton btnSubirArchivo = new JButton(mimodelo.getTextoBotonsubida());
-		btnSubirArchivo.setBackground(new Color(102, 205, 170));
+		btnSubirArchivo.setForeground(new Color(0, 0, 0));
+		btnSubirArchivo.setBackground(new Color(255, 255, 255));	
+		btnSubirArchivo.setBorder(thickBorder);
 		JButton btnDescargarArchivo = new JButton(mimodelo.getTextoBotonBajada());
-		btnDescargarArchivo.setForeground(new Color(255, 255, 255));
-		btnDescargarArchivo.setBackground(new Color(46, 139, 87));
+		btnDescargarArchivo.setForeground(new Color(0, 0, 0));
+		btnDescargarArchivo.setBackground(new Color(255, 255, 255));		
+		btnDescargarArchivo.setBorder(thickBorder);
 		JButton btnCrearCarpeta = new JButton(mimodelo.getTextoBotonCrear());
-		btnCrearCarpeta.setBackground(new Color(30, 144, 255));
+		btnCrearCarpeta.setForeground(new Color(0, 0, 0));
+		btnCrearCarpeta.setBackground(new Color(255, 255, 255));	
+		btnCrearCarpeta.setBorder(thickBorder);
 		JButton btnBorrarCarpeta = new JButton(mimodelo.getTextoBotonBorrar());
-		btnBorrarCarpeta.setBackground(new Color(100, 149, 237));
+		btnBorrarCarpeta.setForeground(new Color(0, 0, 0));
+		btnBorrarCarpeta.setBackground(new Color(255, 255, 255));	
+		btnBorrarCarpeta.setBorder(thickBorder);
 		JButton btnRenombrar = new JButton(mimodelo.getTextoBotonRenombrar());
-		btnRenombrar.setBackground(new Color(230, 230, 250));
-
+		btnRenombrar.setForeground(new Color(0, 0, 0));
+		btnRenombrar.setBackground(new Color(255, 255, 255));	
+		btnRenombrar.setBorder(thickBorder);
+		
+		
 		ConexionConBD bd2 = new ConexionConBD(mimodelo);
 
 		try {
@@ -105,16 +128,29 @@ public class DirigentesWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 444);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(204, 51, 0));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JLabel lblRuta = new JLabel();
+		lblRuta.setForeground(new Color(255, 255, 255));
+		lblRuta.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblRuta.setBounds(27, 43, 628, 27);
+		contentPane.add(lblRuta);
+		lblRuta.setText(direcSelec);
+		
 		JLabel lblUsuario = new JLabel();
-		lblUsuario.setBounds(516, 30, 139, 14);
+		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblUsuario.setForeground(new Color(255, 255, 255));
+		lblUsuario.setBounds(489, 11, 139, 21);
 		contentPane.add(lblUsuario);
 		
 		JLabel lblServidorFtp = new JLabel("Servidor FTP:");
-		lblServidorFtp.setBounds(27, 11, 220, 14);
+		lblServidorFtp.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblServidorFtp.setForeground(new Color(255, 255, 255));
+		lblServidorFtp.setBackground(Color.BLACK);
+		lblServidorFtp.setBounds(27, 11, 220, 21);
 		contentPane.add(lblServidorFtp);
 		lblUsuario.setText("Usuario: " + Usuario);
 		lblServidorFtp.setText("Servidor FTP: " + mimodelo.getTextoIpFtp());
@@ -129,10 +165,11 @@ public class DirigentesWindow extends JFrame {
 		barraDesplazamiento.setPreferredSize(new Dimension(335, 300));
 		barraDesplazamiento.setBounds(new Rectangle(27, 81, 335, 300));
 		barraDesplazamiento.setViewportView(list);
+		barraDesplazamiento.setBorder(thickBorder);
 		list.setLayoutOrientation(JList.VERTICAL);
 		contentPane.add(barraDesplazamiento);
 		try {
-			LlenarLista(cliente.getFiles(), "/");
+			LlenarLista(cliente.getFiles(), "/", lblRuta);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -163,8 +200,8 @@ public class DirigentesWindow extends JFrame {
 								direcSelec = cliente.client.printWorkingDirectory();
 								FTPFile[] ff2 = null;
 								ff2 = cliente.client.listFiles();
-
-								LlenarLista(ff2, direcSelec);
+								
+								LlenarLista(ff2, direcSelec, lblRuta);
 							} catch (Exception e2) {
 								// TODO: handle exception
 								e2.printStackTrace();
@@ -185,7 +222,7 @@ public class DirigentesWindow extends JFrame {
 								ff2 = cliente.client.listFiles();
 								direcSelec = direcSelec2;
 
-								LlenarLista(ff2, direcSelec);
+								LlenarLista(ff2, direcSelec, lblRuta);
 							} catch (IOException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -240,7 +277,7 @@ public class DirigentesWindow extends JFrame {
 
 						lista.removeAllElements();
 
-						LlenarLista(ff2, direcSelec);
+						LlenarLista(ff2, direcSelec, lblRuta);
 						JOptionPane.showMessageDialog(null, mimodelo.getTextoVentanaEmergenteGestionSubidaExitosa());
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -311,7 +348,7 @@ public class DirigentesWindow extends JFrame {
 							FTPFile[] ff2 = null;
 							ff2 = cliente.client.listFiles();
 
-							LlenarLista(ff2, direcSelec);
+							LlenarLista(ff2, direcSelec, lblRuta);
 						}
 					} catch (HeadlessException e1) {
 						e1.printStackTrace();
@@ -384,7 +421,7 @@ public class DirigentesWindow extends JFrame {
 
 							lista.removeAllElements();
 
-							LlenarLista(ff2, direcSelec);
+							LlenarLista(ff2, direcSelec, lblRuta);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -396,7 +433,7 @@ public class DirigentesWindow extends JFrame {
 		btnRenombrar.setBounds(464, 264, 129, 41);
 		contentPane.add(btnRenombrar);
 
-		JButton btnEliminarArchivo = new JButton(mimodelo.getTextoBotonBorrar2());
+
 		btnEliminarArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -425,22 +462,21 @@ public class DirigentesWindow extends JFrame {
 			}
 		});
 		btnEliminarArchivo.setBounds(464, 200, 129, 41);
-		contentPane.add(btnEliminarArchivo);
-		
+		contentPane.add(btnEliminarArchivo);		
 	
 	}
 
-	public static void LlenarLista(FTPFile[] files, String direc2) throws IOException {
+	public static void LlenarLista(FTPFile[] files, String direc2, JLabel lblRuta) throws IOException {
 		if (files == null)
 			return;
 		System.out.println("Llenando...");
 		lista = new DefaultListModel<>();
 
-		list.setForeground(Color.blue);
+		list.setForeground(Color.BLACK);
 		list.setFont(new Font("Courier", Font.PLAIN, 12));
 
 		list.removeAll();
-
+		lblRuta.setText("RUTA: " + direcSelec);
 		try {
 			client.changeWorkingDirectory(direc2);
 		} catch (Exception e) {
