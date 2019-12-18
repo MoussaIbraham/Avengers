@@ -8,7 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.mail.BodyPart;
+import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -36,7 +38,14 @@ public class POP3 extends JFrame {
 	static DefaultListModel modelocorreos = new DefaultListModel();
 	static JList list;
 	Modelo m = new Modelo();
-
+	
+	
+	static Properties prop = new Properties();
+	static Message[] mensajes;
+	static Session sesion = Session.getInstance(prop);
+	static Store store;
+	static Folder folder;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -99,7 +108,7 @@ public class POP3 extends JFrame {
 		});
 		
 		JButton refresh = new JButton(m.getTextoPOPBotonActualizarCorreo());
-		refresh.setBounds(577, 260, 99, 39);
+		refresh.setBounds(577, 199, 99, 39);
 		contentPane.add(refresh);
 		refresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -117,12 +126,8 @@ public class POP3 extends JFrame {
 				dispose();
 			}
 		});
-		closemail.setBounds(577, 328, 99, 39);
+		closemail.setBounds(577, 271, 99, 39);
 		contentPane.add(closemail);
-		
-		JButton btnNewButton = new JButton(m.getTextoPOPBotonBorrarCorreo());
-		btnNewButton.setBounds(577, 198, 99, 36);
-		contentPane.add(btnNewButton);
 	}
 
 	public static void abrircorreo() {
@@ -164,44 +169,40 @@ public class POP3 extends JFrame {
 
 		recibidosarray.removeAll(recibidosarray);
 		textoscorreos.removeAll(textoscorreos);
-		Properties prop = new Properties();
+
 		prop.setProperty("mail.pop3.starttls.enable", "false");
 		prop.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		prop.setProperty("mail.pop3.socketFactory.fallback", "false");
 		prop.setProperty("mail.pop3.port", "995");
 		prop.setProperty("mail.pop3.socketFactory.port", "995");
-
-		Session sesion = Session.getInstance(prop);
-		sesion.setDebug(true);
-		Store store;
+		
+		
 		try {
 			store = sesion.getStore("pop3");
 			store.connect("pop.gmail.com", user, password);
-			Folder folder = store.getFolder("INBOX");
-			folder.open(Folder.READ_ONLY);
-			Message[] mensajes = folder.getMessages();
+			folder = store.getFolder("INBOX");
+			folder.open(Folder.READ_WRITE);
+			mensajes = folder.getMessages();
 			for (int i = 0; i < mensajes.length; i++) {
 				if (mensajes[i].isMimeType("text/*")) {
 					ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom()[0].toString(),
 							mensajes[i].getSubject().toString(), mensajes[i].getContent().toString());
 					textoscorreos.add(correo);
-					recibidosarray.add("Recibido de: " + mensajes[i].getFrom()[0] + " Asunto: "
-							+ mensajes[i].getSubject().toString());
-				} else if (mensajes[i].isMimeType("multipart/*")) {
+					recibidosarray.add("Recibido de: " + mensajes[i].getFrom()[0] + " Asunto: " + mensajes[i].getSubject().toString());
+				} 
+				else if (mensajes[i].isMimeType("multipart/*")) {
 					ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom()[0].toString(),
 							mensajes[i].getSubject().toString(), transformartexto(mensajes[i]));
 					textoscorreos.add(correo);
-					recibidosarray.add("Recibido de: " + mensajes[i].getFrom()[0] + " Asunto: "
-							+ mensajes[i].getSubject().toString());
+					recibidosarray.add("Recibido de: " + mensajes[i].getFrom()[0] + " Asunto: " + mensajes[i].getSubject().toString());
 				}
+				modelocorreos.removeAllElements();
 				modelocorreos.addAll(recibidosarray);
 				list.setModel(modelocorreos);
 			}
 		} catch (NoSuchProviderException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

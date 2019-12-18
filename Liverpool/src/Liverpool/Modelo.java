@@ -98,6 +98,7 @@ public class Modelo {
 			TextoPOPBotonCerrarCorreo="Close Mail",
 			TextoPOPBotonActualizarCorreo="Refresh",
 			TextoPOPBotonBorrarCorreo = "Delete Mail",
+			TextoPOPtextoconfimarborrado="Are you sure you want to delete the email?",
 	
 			//Ventana correo SMTP
 			TextoSMTPLabelDestinatario="To",
@@ -112,6 +113,14 @@ public class Modelo {
 	
 	
 	
+	public String getTextoPOPtextoconfimarborrado() {
+		return TextoPOPtextoconfimarborrado;
+	}
+
+	public void setTextoPOPtextoconfimarborrado(String textoPOPtextoconfimarborrado) {
+		TextoPOPtextoconfimarborrado = textoPOPtextoconfimarborrado;
+	}
+
 	public String getTextoPOPBotonActualizarCorreo() {
 		return TextoPOPBotonActualizarCorreo;
 	}
