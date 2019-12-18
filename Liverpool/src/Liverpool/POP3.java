@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Properties;
 import java.awt.event.ActionEvent;
 
@@ -181,7 +182,7 @@ public class POP3 extends JFrame {
 			store = sesion.getStore("pop3");
 			store.connect("pop.gmail.com", user, password);
 			folder = store.getFolder("INBOX");
-			folder.open(Folder.READ_WRITE);
+			folder.open(Folder.READ_ONLY);
 			mensajes = folder.getMessages();
 			for (int i = 0; i < mensajes.length; i++) {
 				if (mensajes[i].isMimeType("text/*")) {
@@ -197,6 +198,10 @@ public class POP3 extends JFrame {
 					recibidosarray.add("Recibido de: " + mensajes[i].getFrom()[0] + " Asunto: " + mensajes[i].getSubject().toString());
 				}
 				modelocorreos.removeAllElements();
+				
+				Collections.reverse(recibidosarray);
+				Collections.reverse(textoscorreos);
+				
 				modelocorreos.addAll(recibidosarray);
 				list.setModel(modelocorreos);
 			}

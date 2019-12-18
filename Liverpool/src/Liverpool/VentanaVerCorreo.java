@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
@@ -17,9 +18,10 @@ public class VentanaVerCorreo extends JFrame {
 	private JTextField de;
 	private JTextField asunto;
 	static Modelo mimodelo;
-	JTextArea Cuerpo = new JTextArea();
 	static ArrayList <ReceivedMail> textoscorreos = new ArrayList<ReceivedMail>();
 	private int posicion;
+	private JScrollPane scrollPane;
+	private JTextArea textArea;
 
 	/**
 	 * Launch the application.
@@ -50,9 +52,6 @@ public class VentanaVerCorreo extends JFrame {
 		contentPane.setLayout(null);
 		
 		
-		Cuerpo.setBounds(10, 82, 619, 168);
-		contentPane.add(Cuerpo);
-		
 		JLabel lblDe = new JLabel(mimodelo.getVerCorreoTextoLabelde());
 		lblDe.setBounds(10, 11, 48, 14);
 		contentPane.add(lblDe);
@@ -62,14 +61,24 @@ public class VentanaVerCorreo extends JFrame {
 		contentPane.add(lblAsunto);
 		
 		de = new JTextField();
+		de.setEditable(false);
 		de.setBounds(68, 8, 561, 20);
 		contentPane.add(de);
 		de.setColumns(10);
 		
 		asunto = new JTextField();
+		asunto.setEditable(false);
 		asunto.setColumns(10);
 		asunto.setBounds(68, 51, 561, 20);
 		contentPane.add(asunto);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 82, 619, 165);
+		contentPane.add(scrollPane);
+		
+		textArea = new JTextArea();
+		textArea.setEditable(false);
+		scrollPane.setViewportView(textArea);
 		
 		vertexto();
 	}
@@ -82,8 +91,8 @@ public class VentanaVerCorreo extends JFrame {
 		
 		de.setText(textoscorreos.get(posicion).getTransmitter().substring(iend));
 		
-		asunto.setText(textoscorreos.get(posicion).getSubject());		
+		asunto.setText(textoscorreos.get(posicion).getSubject());
 		
-		Cuerpo.setText(textoscorreos.get(posicion).getBodyMail());	
+		textArea.setText(textoscorreos.get(posicion).getBodyMail());
 	}
 }
