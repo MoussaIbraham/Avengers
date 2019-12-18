@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.Properties;
 import java.awt.event.ActionEvent;
 
-public class POP3 extends JFrame {
+public class POP3 extends JFrame implements Runnable{
 
 	private JPanel contentPane;
 	static ArrayList<ReceivedMail> textoscorreos = new ArrayList<ReceivedMail>();
@@ -46,6 +46,11 @@ public class POP3 extends JFrame {
 	static Session sesion = Session.getInstance(prop);
 	static Store store;
 	static Folder folder;
+	
+	static JButton closemail;
+	static JButton refresh;
+	static JButton sendmail;
+	static JButton openmail;
 	
 	/**
 	 * Launch the application.
@@ -114,7 +119,9 @@ public class POP3 extends JFrame {
 		refresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					ControlButtons(false);
 					receiveEmail();
+					ControlButtons(true);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -211,5 +218,27 @@ public class POP3 extends JFrame {
 			e.printStackTrace();
 		}
 
+	}
+	public static void ControlButtons(boolean active) {
+		closemail.setEnabled(active);
+		refresh.setEnabled(active);
+		sendmail.setEnabled(active);
+		openmail.setEnabled(active);
+	}
+
+	@Override
+	public void run() {
+		try {
+			Thread.sleep(15000);
+			ControlButtons(false);
+			receiveEmail();
+			ControlButtons(true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

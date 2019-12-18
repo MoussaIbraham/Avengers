@@ -6,11 +6,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/activation-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/com.mysql.jdbc_5.1.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/commons-net-3.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/commons-net-3.6-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/commons-net-examples-3.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/ftp librerias/javax.mail.jar"/>
+	<classpathentry kind="lib" path="C:/GSDAMJARS/drive-download-20191213T080459Z-001/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/GSDAMJARS/drive-download-20191213T080459Z-001/com.mysql.jdbc_5.1.5.jar"/>
+	<classpathentry kind="lib" path="C:/GSDAMJARS/drive-download-20191213T080459Z-001/commons-net-3.6.jar"/>
+	<classpathentry kind="lib" path="C:/GSDAMJARS/drive-download-20191213T080459Z-001/commons-net-3.6-sources.jar"/>
+	<classpathentry kind="lib" path="C:/GSDAMJARS/drive-download-20191213T080459Z-001/commons-net-examples-3.6.jar"/>
+	<classpathentry kind="lib" path="C:/GSDAMJARS/drive-download-20191213T080459Z-001/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
