@@ -75,7 +75,7 @@ public class Modelo {
 	
 	
 			//Otros textos
-			TextoIpFtp="localhost",
+			TextoIpFtp="192.168.137.1",
 
 			TextoServerSMTP = "smtp.gmail.com",
 
@@ -97,6 +97,7 @@ public class Modelo {
 			TextoPOPBotonEscribirCorreo="Send Mail",
 			TextoPOPBotonCerrarCorreo="Close Mail",
 			TextoPOPBotonActualizarCorreo="Refresh",
+			TextoPOPBotonBorrarCorreo = "Delete Mail",
 	
 			//Ventana correo SMTP
 			TextoSMTPLabelDestinatario="To",
@@ -621,7 +622,16 @@ public class Modelo {
 
 	public void setTextoSMTPButtonAñadirArchivo(String textoSMTPButtonAñadirArchivo) {
 		TextoSMTPButtonAñadirArchivo = textoSMTPButtonAñadirArchivo;
+	}
+
+	public String getTextoPOPBotonBorrarCorreo() {
+		return TextoPOPBotonBorrarCorreo;
+	}
+
+	public void setTextoPOPBotonBorrarCorreo(String textoPOPBotonBorrarCorreo) {
+		TextoPOPBotonBorrarCorreo = textoPOPBotonBorrarCorreo;
 	}			
+	
 	
 	
 }

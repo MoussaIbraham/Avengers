@@ -41,6 +41,11 @@ public class VentanaClientePOP3 extends JFrame {
 	static String password;
 	static JList bandeja;
 	static DefaultListModel modelocorreos = new DefaultListModel();
+	JButton btnAbrirCorreo;
+	JButton btnEscribirCorreo;
+	JButton btnCerrarCorreo;
+	JButton btnActualizar;
+	
 
 	/**
 	 * Launch the application.
@@ -74,7 +79,7 @@ public class VentanaClientePOP3 extends JFrame {
 		contentPane.setLayout(null);
 		
 		
-		JButton btnAbrirCorreo = new JButton(mimodelo.getTextoPOPBotonAbrirCorreo());
+		btnAbrirCorreo = new JButton(mimodelo.getTextoPOPBotonAbrirCorreo());
 		btnAbrirCorreo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -86,7 +91,7 @@ public class VentanaClientePOP3 extends JFrame {
 		contentPane.add(btnAbrirCorreo);
 		
 		
-		JButton btnEscribirCorreo = new JButton(mimodelo.getTextoPOPBotonEscribirCorreo());
+		btnEscribirCorreo = new JButton(mimodelo.getTextoPOPBotonEscribirCorreo());
 		btnEscribirCorreo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -99,17 +104,16 @@ public class VentanaClientePOP3 extends JFrame {
 		contentPane.add(btnEscribirCorreo);
 		
 		
-		JButton btnCerrarCorreo = new JButton(mimodelo.getTextoPOPBotonCerrarCorreo());
+		btnCerrarCorreo = new JButton(mimodelo.getTextoPOPBotonCerrarCorreo());
 		btnCerrarCorreo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				dispose();
 			}
 		});
 		btnCerrarCorreo.setBounds(568, 156, 108, 35);
 		contentPane.add(btnCerrarCorreo);
 		
-		JButton btnActualizar = new JButton(mimodelo.getTextoPOPBotonActualizarCorreo());
+		btnActualizar = new JButton(mimodelo.getTextoPOPBotonActualizarCorreo());
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					
@@ -139,6 +143,8 @@ public class VentanaClientePOP3 extends JFrame {
 
 	public static void receiveEmail() throws IOException {  
 			  
+		recibidosarray.removeAll(recibidosarray);
+		textoscorreos.removeAll(textoscorreos);
 		 Properties prop = new Properties();
 	        prop.setProperty("mail.pop3.starttls.enable", "false");
 	        prop.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
@@ -186,7 +192,7 @@ public class VentanaClientePOP3 extends JFrame {
 	
 	public static void abrircorreo() {
 		
-		int selecccionado = bandeja.getSelectedIndex();;		
+		int selecccionado = bandeja.getSelectedIndex();		
 		VentanaVerCorreo verventana = new VentanaVerCorreo(mimodelo, selecccionado, textoscorreos);
 		verventana.setVisible(true);
 	}

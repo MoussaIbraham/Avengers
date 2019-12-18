@@ -69,11 +69,13 @@ public class VentanaLoginCorreo extends JFrame {
 		JButton btnLogIn = new JButton(mimodelo.getLoginCorreoTextoBotonLogin());
 		btnLogIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				VentanaClientePOP3 correos = new VentanaClientePOP3(mimodelo,correo.getText(),contraseña.getText());
+				POP3 correos = new POP3(mimodelo,correo.getText(),contraseña.getText());
 				correos.setVisible(true);
-				HiloCorreo hilo = new HiloCorreo(correos);
-				hilo.start();
+//				HiloCorreo hilo = new HiloCorreo(correos);
+//				hilo.start();
+				//VentanaClientePOP3 correos = new VentanaClientePOP3(mimodelo,correo.getText(),contraseña.getText());
+				//correos.setVisible(true);
+
 				
 			}
 		});

@@ -82,10 +82,7 @@ public class VentanaVerCorreo extends JFrame {
 		
 		de.setText(textoscorreos.get(posicion).getTransmitter().substring(iend));
 		
-		asunto.setText(textoscorreos.get(posicion).getSubject());
-		
-		
-		
+		asunto.setText(textoscorreos.get(posicion).getSubject());		
 		
 		Cuerpo.setText(textoscorreos.get(posicion).getBodyMail());	
 	}
