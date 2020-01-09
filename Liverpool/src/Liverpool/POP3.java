@@ -1,21 +1,20 @@
 package Liverpool;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.mail.BodyPart;
-import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
+import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.MimeMultipart;
@@ -27,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class POP3 extends JFrame implements Runnable{
 
@@ -39,7 +39,7 @@ public class POP3 extends JFrame implements Runnable{
 	static DefaultListModel modelocorreos = new DefaultListModel();
 	static JList list;
 	Modelo m = new Modelo();
-	
+
 	
 	static Properties prop = new Properties();
 	static Message[] mensajes;
@@ -78,6 +78,7 @@ public class POP3 extends JFrame implements Runnable{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 770, 452);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(227,27,35));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -94,8 +95,9 @@ public class POP3 extends JFrame implements Runnable{
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		JButton openmail = new JButton(m.getTextoPOPBotonAbrirCorreo());
+		openmail = new JButton(m.getTextoPOPBotonAbrirCorreo());
 		openmail.setBounds(577, 50, 99, 34);
+		openmail.setBorder(new LineBorder(Color.YELLOW));
 		contentPane.add(openmail);
 		openmail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -103,8 +105,9 @@ public class POP3 extends JFrame implements Runnable{
 			}
 		});
 		
-		JButton sendmail = new JButton(m.getTextoSMTPBotonEnviar());
+		sendmail = new JButton(m.getTextoSMTPBotonEnviar());
 		sendmail.setBounds(577, 125, 99, 39);
+		sendmail.setBorder(new LineBorder(Color.YELLOW));
 		contentPane.add(sendmail);
 		sendmail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
@@ -113,8 +116,9 @@ public class POP3 extends JFrame implements Runnable{
 			}
 		});
 		
-		JButton refresh = new JButton(m.getTextoPOPBotonActualizarCorreo());
+		refresh = new JButton(m.getTextoPOPBotonActualizarCorreo());
 		refresh.setBounds(577, 199, 99, 39);
+		refresh.setBorder(new LineBorder(Color.YELLOW));
 		contentPane.add(refresh);
 		refresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -128,14 +132,17 @@ public class POP3 extends JFrame implements Runnable{
 			}
 		});
 		
-		JButton closemail = new JButton(m.getTextoBotonCerrar());
+		closemail = new JButton(m.getTextoBotonCerrar());
 		closemail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
 		closemail.setBounds(577, 271, 99, 39);
+		closemail.setBorder(new LineBorder(Color.YELLOW));
 		contentPane.add(closemail);
+		
+		setVisible(true);
 	}
 
 	public static void abrircorreo() {
@@ -192,6 +199,8 @@ public class POP3 extends JFrame implements Runnable{
 			folder.open(Folder.READ_ONLY);
 			mensajes = folder.getMessages();
 			for (int i = 0; i < mensajes.length; i++) {
+				
+				
 				if (mensajes[i].isMimeType("text/*")) {
 					ReceivedMail correo = new ReceivedMail(mensajes[i].getFrom()[0].toString(),
 							mensajes[i].getSubject().toString(), mensajes[i].getContent().toString());
@@ -204,6 +213,8 @@ public class POP3 extends JFrame implements Runnable{
 					textoscorreos.add(correo);
 					recibidosarray.add("Recibido de: " + mensajes[i].getFrom()[0] + " Asunto: " + mensajes[i].getSubject().toString());
 				}
+			
+			}
 				modelocorreos.removeAllElements();
 				
 				Collections.reverse(recibidosarray);
@@ -211,7 +222,7 @@ public class POP3 extends JFrame implements Runnable{
 				
 				modelocorreos.addAll(recibidosarray);
 				list.setModel(modelocorreos);
-			}
+			
 		} catch (NoSuchProviderException e) {
 			e.printStackTrace();
 		} catch (MessagingException e) {
@@ -225,6 +236,8 @@ public class POP3 extends JFrame implements Runnable{
 		sendmail.setEnabled(active);
 		openmail.setEnabled(active);
 	}
+	
+	
 
 	@Override
 	public void run() {

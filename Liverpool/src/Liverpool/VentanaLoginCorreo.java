@@ -1,11 +1,13 @@
 package Liverpool;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -47,6 +49,7 @@ public class VentanaLoginCorreo extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.setBackground(new Color(227,27,35));
 		
 		JLabel lblMail = new JLabel(mimodelo.getLoginCorreoTextoLabeluser());
 		lblMail.setBounds(10, 41, 58, 14);
@@ -81,6 +84,7 @@ public class VentanaLoginCorreo extends JFrame {
 			}
 		});
 		btnLogIn.setBounds(141, 182, 89, 23);
+		btnLogIn.setBorder(new LineBorder(Color.YELLOW));
 		contentPane.add(btnLogIn);
 		
 		JButton btnCancel = new JButton(mimodelo.getLoginCorreoTextoBotonCancel());
@@ -91,6 +95,7 @@ public class VentanaLoginCorreo extends JFrame {
 			}
 		});
 		btnCancel.setBounds(10, 182, 89, 23);
+		btnCancel.setBorder(new LineBorder(Color.YELLOW));
 		contentPane.add(btnCancel);
 	}
 }

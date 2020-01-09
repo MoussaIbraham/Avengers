@@ -1,12 +1,11 @@
 package Liverpool;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Window;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -44,6 +43,7 @@ public class VentanaMenu extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.setBackground(new Color(227,27,35));
 		
 		JButton btnAccederAArchivos = new JButton(mimodelo.getTextoBotonGestion());
 		btnAccederAArchivos.addActionListener(new ActionListener() {
@@ -56,6 +56,7 @@ public class VentanaMenu extends JFrame {
 			}
 		});
 		btnAccederAArchivos.setBounds(61, 38, 142, 39);
+		btnAccederAArchivos.setBorder(new LineBorder(Color.YELLOW));
 		contentPane.add(btnAccederAArchivos);
 		
 		JButton btnAccederAlCorreo = new JButton(mimodelo.getTextoBotonCorreo());
@@ -65,9 +66,11 @@ public class VentanaMenu extends JFrame {
 				VentanaLoginCorreo correo = new VentanaLoginCorreo(mimodelo);
 				correo.setVisible(true);
 				
+				
 			}
 		});
 		btnAccederAlCorreo.setBounds(61, 88, 142, 39);
+		btnAccederAlCorreo.setBorder(new LineBorder(Color.YELLOW));
 		contentPane.add(btnAccederAlCorreo);
 		
 		JButton btnSalir = new JButton(mimodelo.getTextoBotonSalir());
@@ -77,6 +80,7 @@ public class VentanaMenu extends JFrame {
 			}
 		});
 		btnSalir.setBounds(61, 138, 142, 39);
+		btnSalir.setBorder(new LineBorder(Color.YELLOW));
 		contentPane.add(btnSalir);
 	}
 
